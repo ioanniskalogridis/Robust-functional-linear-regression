@@ -44,7 +44,7 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
   
   rob.ctrl <- lmrob.control(trace.level = 0,       
                             nResample   = 10000,      
-                            tuning.psi  = 4.685,     
+                            tuning.psi  = k,     
                             subsampling = 'simple',  
                             rel.tol     = 1e-07,      
                             refine.tol  = 1e-07,      
@@ -64,8 +64,6 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
   lambda1 <- optimize(f = GCV, interval = interval, tol = 1e-14)$minimum
   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
   
-  # b.p <- eval.basis(seq(0,1, len = 50000), b.sp)%*%fit.r$beta
-  # plot(b.p, type = "l")
   beta.hat <- b.sp.e%*%fit.r$beta
   return(list(bh = beta.hat, beta = fit.r$beta, alpha = fit.r$alpha,  weights = fit.r$weights, lam = lambda1, 
               resids = fit.r$resids, b.sp.e = b.sp.e))
