@@ -1,5 +1,5 @@
-library(robustbase)
-library(fda)
+require(robustbase)
+require(fda)
 
 m.step <- function(x, y, tol = 1e-08, maxit = 200, resids.in, scale, k, p.m, lambda){
   
