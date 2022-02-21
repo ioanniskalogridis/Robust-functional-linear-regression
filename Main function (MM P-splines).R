@@ -68,7 +68,14 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
     GIC <- sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + 2*hat.tr
     return(GCV.scores)
   }
-  lambda1 <- optimize(f = GCV, interval = interval, tol = 1e-14)$minimum
+  
+  lambda.cand <- c(1e-09, 3e-08, 8e-08, 3e-07, 8e-07, 3e-06, 8e-06,
+                   3e-05, 8e-05, 3e-04, 8e-04, 3e-03, 8e-03, 3e-02, 8e-02, 3)
+  lambda.e <- sapply(lambda.cand, FUN = GCV)
+  wm <- which.min(lambda.e)
+  lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wn+1]) , tol = 1e-14)$minimum
+  
+
   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
   
   beta.hat <- b.sp.e%*%fit.r$beta
