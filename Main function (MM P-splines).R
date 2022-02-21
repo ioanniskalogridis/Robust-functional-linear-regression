@@ -58,7 +58,14 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
   
   GCV <- function(lambda){
     fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda)
-    GCV.scores <- mean( fit.r$weights*fit.r$resids^2/((1-fit.r$hat.tr)^2) )
+    # GCV.scores <- mean( fit.r$weights*fit.r$resids^2/((1-fit.r$hat.tr)^2) )
+    weights <- Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)/scale^2
+    NP <- scale(t(x.p), center = FALSE, scale = c(1/weights))%*%x.p
+    hessian.m <-  NP + 2*lambda*p.m
+    gr <- -Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 0)/scale
+    Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr*c(fit.r$resids/scale^2)) )%*%x.p
+    hat.tr <- sum(diag(  -solve(hessian.m)%*%Q.m   ))
+    GIC <- sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + 2*hat.tr
     return(GCV.scores)
   }
   lambda1 <- optimize(f = GCV, interval = interval, tol = 1e-14)$minimum
