@@ -12,7 +12,7 @@ grid <- seq(0, 1, length = p)
 alpha <- sin(2*pi*grid) 
 
 mse1 <- rep(NA, Nrep)
-mse2 <- rep(NA, Nrep
+mse2 <- rep(NA, Nrep)
 
 matr1 <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
