@@ -47,6 +47,11 @@ u.tr <- function(x, alpha){
   return(u.tr)
 }
 
+predict.mpen <- function(fit.r, x){
+  pred.values <- fit.r$alpha + x%*%fit.r$bh/dim(x)[2]
+  return(pred.values)
+}
+
 cv.function<- function(x, y, nfolds, int){
   x <- as.matrix(x)
   splits <- split(1:dim(x)[1], sample( rep(1:nfolds, times= rep( round(dim(x)[1]/nfolds), nfolds ) )) )
@@ -88,3 +93,4 @@ cv.function(x, y10, 5, c(9e-03, 6e-02))
 cv.function(x, y11, 5, c(8e-05, 5e-04))
 cv.function(x, y12, 5, c(9e-02, 5e-01))
 cv.function(x, y13, 5, c(70, 110))
+
