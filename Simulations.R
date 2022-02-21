@@ -30,9 +30,9 @@ for(f in 1:Nrep){
   y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), interval = c(0.2, 0.6))
+  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
   fit2 <- fpcr(y, xfuncs = X0)
-
+  
   mse1[f] <- mean( (alpha-fit1$bh/p)^2 )  
   mse2[f] <- mean( (alpha-fit2$fhat)^2 )
   
@@ -178,7 +178,7 @@ for(f in 1:Nrep){
   y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), interval = c(3e-06, 1.5e-05))
+  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
   fit2 <- fpcr(y, xfuncs = X0)
 
   mse1[f] <- mean( (alpha-fit1$bh/p)^2 )  
