@@ -65,7 +65,7 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
     gr <- -Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 0)/scale
     Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr*c(fit.r$resids/scale^2)) )%*%x.p
     hat.tr <- sum(diag(  -solve(hessian.m)%*%Q.m   ))
-    GIC <- sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + 2*hat.tr
+    GCV.scores <- 2*sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + 2*hat.tr
     return(GCV.scores)
   }
   
@@ -73,7 +73,9 @@ m.pen.sp <- function(x, y, nbasis = 40, norder = 4,  k = 4.685, q  = 2, interval
                    3e-05, 8e-05, 3e-04, 8e-04, 3e-03, 8e-03, 3e-02, 8e-02, 3)
   lambda.e <- sapply(lambda.cand, FUN = GCV)
   wm <- which.min(lambda.e)
-  lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wn+1]) , tol = 1e-14)$minimum
+  if(wm==1){wm <- 2}
+  else if(wm==length(lambda.cand)){wm <- (length(lambda.cand)-1)}
+  lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wm+1]) , tol = 1e-14)$minimum
   
 
   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
