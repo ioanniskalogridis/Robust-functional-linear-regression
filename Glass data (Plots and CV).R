@@ -28,15 +28,73 @@ hist(y3, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
 hist(y5, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
 hist(y12, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
 
-fit4 <- m.pen.sp(x = x, y = y4, norder = 4, nbasis = 40, q = 2, k = 4.685)
+fit1 <- m.pen.sp(x = x, y = y1, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit1$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit11 <- fpcr(y = y1, xfuncs = x)
+lines(fit11$fhat, lwd = 3, col = "red", lty = 2)
+
+fit2 <- m.pen.sp(x = x, y = y2, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit2$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit21 <- fpcr(y = y2, xfuncs = x)
+lines(fit21$fhat, lwd = 3, col = "red", lty = 2)
+
+fit3 <- m.pen.sp(x = x, y = y3, norder = 4, nbasis = 200, q = 2, k = 4.685)
+plot(fit3$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit31 <- fpcr(y = y3, xfuncs = x)
+lines(fit31$fhat, lwd = 3, col = "red", lty = 2)
+
+fit4 <- m.pen.sp(x = x, y = y4, norder = 4, nbasis = 25, q = 2, k = 4.685)
 plot(fit4$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- fpcr(y = y4, xfuncs = x)
 lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
+
+fit5 <- m.pen.sp(x = x, y = y5, norder = 4, nbasis = 30, q = 2, k = 3.44)
+plot(fit5$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit51 <- fpcr(y = y6, xfuncs = x)
+lines(fit51$fhat, lwd = 3, col = "red", lty = 2)
+
+fit6 <- m.pen.sp(x = x, y = y6, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit6$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit61 <- fpcr(y = y6, xfuncs = x)
+lines(fit61$fhat, lwd = 3, col = "red", lty = 2)
+
+fit7 <- m.pen.sp(x = x, y = y7, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit7$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit71 <- fpcr(y = y7, xfuncs = x)
+lines(fit71$fhat, lwd = 3, col = "red", lty = 2)
+
+fit8 <- m.pen.sp(x = x, y = y8, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit8$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit81 <- fpcr(y = y8, xfuncs = x)
+lines(fit81$fhat, lwd = 3, col = "red", lty = 2)
+
+fit9 <- m.pen.sp(x = x, y = y9, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit9$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit91 <- fpcr(y = y9, xfuncs = x)
+lines(fit91$fhat, lwd = 3, col = "red", lty = 2)
+
+fit10 <- m.pen.sp(x = x, y = y10, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit10$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit101 <- fpcr(y = y10, xfuncs = x)
+lines(fit101$fhat, lwd = 3, col = "red", lty = 2)
+
+fit11 <- m.pen.sp(x = x, y = y11, norder = 4, nbasis = 40, q = 2, k = 4.685)
+plot(fit11$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+fit111 <- fpcr(y = y11, xfuncs = x)
+lines(fit111$fhat, lwd = 3, col = "red", lty = 2)
 
 fit12 <- m.pen.sp(x = x, y = y12, norder = 4, nbasis = 40)
 plot(fit12$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit121 <- fpcr(y = y12, xfuncs = x)
 lines(fit121$fhat, lwd = 3, col = "red", lty = 2)
+
+fit13 <- m.pen.sp(x = x, y = y13, norder = 4, nbasis = 40)
+plot(fit13$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
+fit131 <- fpcr(y = y13, xfuncs = x)
+lines(fit131$fhat, lwd = 3, col = "red", lty = 2)
+
+
+
 
 # Upper trimmed mean
 u.tr <- function(x, alpha){
@@ -64,7 +122,7 @@ cv.function<- function(x, y, nfolds, int){
     x.train <- x[-splits[[j]], ]
     y.test <- y[splits[[j]]]
     y.train <- y[-splits[[j]]]
-    fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 4.685, nbasis = round(min(40, length(y.train)/4)))
+    fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 4.685, q = 1, nbasis = round(min(30, length(y.train)/4)))
     fit.ls <- fpcr(y = y.train, x = x.train)
     pred.values.r <- predict.mpen( fit.r, x.test)
     pred.values.ls <- as.numeric(fit.ls$undecor.coef) +  x.test%*%fit.ls$fhat
