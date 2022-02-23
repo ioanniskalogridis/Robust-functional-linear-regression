@@ -12,11 +12,14 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2){
   
   x.p <- x%*%b.sp.e/dim(x)[2]
 
+  p.m.a <- rbind( rep(0, (dim(x.p)[2]+1) ), cbind(rep(0, dim(x.p)[2]), p.m) )
+  x.a <- cbind(rep(1, dim(x.p)[1]), x.p)
+  
   GCV <- function(lambda){
-    ls.est <- solve(t(x.p)%*%x.p + lambda*p.m, t(x.p)%*%y)
-    hat.m <- x.p%*%solve(t(x.p)%*%x.p + lambda*p.m, t(x.p))
-    GCV.scores <- 
-    
+    ls.est <- solve(t(x.a)%*%x.a + lambda*p.m.a, t(x.a)%*%y)
+    resids <- y - x.a%*%ls.est
+    hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda*p.m.a, t(x.a))
+    GCV.scores <- mean( resids^2/(1-diag(hat.m))^2 )
     return(GCV.scores)
   }
   
@@ -30,37 +33,16 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2){
     wm <- 2
   } else if(wm==length(lambda.cand)){wm <- (length(lambda.cand)-1)}
   lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wm+1]) , tol = 1e-14)$minimum
-  fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
-  
-  # 
-  hs <- diag(x.p%*%solve( t(x.p)%*%diag(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1))%*%x.p + 2*lambda1*p.m, t(x.p) ))
-  lred <- fit.r$resids*( 1 + fit.r$weights*hs/(1-hs*Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)) )
-  #   
-  #   sdw <- sqrt(sum(fit.r$weights*(lred^2-GCV(lambda1))^2/(sum(fit.r$weights) - sum(fit.r$weights^2)/sum(fit.r$weights)) ))/sqrt(n)
-  #   #
-  sdw <- scaleTau2(lred^2-GCV(lambda1), c2 = 5)/sqrt(n)
-  #   # sdw <- scaleTau2(fit.r$resids^2/(1-fit.r$hat.tr)^2-GCV(lambda1), c2 = 5)/sqrt(n)
-  # # M <- sum(fit.r$weights !=0)
-  #   # sdw <- sqrt(wtd.var(lred^2, weights = fit.r$weights,  normwt=TRUE))/sqrt(n)
-  #   # sdw <- sqrt(wtd.var(fit.r$resids/(1-fit.r$hat.tr), weights = fit.r$weights))/sqrt(n)
-  # sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/(1-mean(fit.r$hat.tr))^2-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
-  # sdw <- sqrt(sum(fit.r$weights*(lred^2-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
-  #   # # # sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/((1-fit.r$hat.tr)^2)-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
+
+  ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
+  hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
+  resids <- y - x.a%*%ls.est
+  sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
   thr <- GCV(lambda1) + 2*sdw
   lambda1 <- max( lambda.cand[lambda.e <= thr]  )
-  fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
+  hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
+  resids <- y - x.a%*%ls.est
   
 }
