@@ -37,12 +37,12 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2){
   
   x <- as.matrix(x)
   n <- length(y)
-  nbasis = ifelse(is.null(nbasis),round(min(n/4, 35)), nbasis)
+  nbasis = ifelse(is.null(nbasis),round(min(n/4, 40)), nbasis)
   b.sp <- create.bspline.basis(c(0, 1), nbasis = nbasis, norder = norder)
   b.sp.e <- eval.basis(seq(1/dim(x)[2], 1-1/dim(x)[2], len = dim(x)[2]), b.sp)
-  p.m <- t( diff(diag( (nbasis)) , differences = q ) )%*%diff(diag( (nbasis ) ), differences = q ) # + diag(nbasis)
+  # p.m <- t( diff(diag( (nbasis)) , differences = q ) )%*%diff(diag( (nbasis ) ), differences = q ) # + diag(nbasis)
   # p.m <- diag(nbasis)
-  # p.m <- bsplinepen(b.sp, Lfdobj = q )# + bsplinepen(b.sp, Lfdobj = 0 )
+  p.m <- bsplinepen(b.sp, Lfdobj = q )# + bsplinepen(b.sp, Lfdobj = 0 )
   
   x.p <- x%*%b.sp.e/dim(x)[2]
   # x.p <- matrix(0, nrow = n, ncol = dim(b.sp.e)[2])
@@ -68,6 +68,14 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2){
   S.est <- lmrob.S(x = x.p, y = y, control = rob.ctrl)
   resids.in <- S.est$residuals
   scale <- S.est$scale
+  a.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 0)^2)
+  b.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 1))
+  c.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 0)*S.est$residuals/S.est$scale )
+  q.my <- 1 + dim(x.p)[2]*a.my/(2*n*b.my*c.my)
+  # scale = q.my*scale
+  
+  # q.my <- 1/(1-(1.29-6.02/n)*dim(x.p)[2]/n)
+  scale <- q.my*scale
   # fit.s <- pensem_cv(x = x.p, y = y, alpha = 0.5, cv_k = 5)
   # scale = fit.s$scale
   # resids.in <- y - fit.s$estimates[[1]]$intercept  - c(x.p%*%fit.s$estimates[[1]]$beta)
@@ -83,20 +91,24 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2){
     # GCV.scores <- sum(fit.r$weights*lred^2)/sum(fit.r$weights)
     # GCV.scores <- scaleTau2(lred, c2 = 5)^2
     # GCV.scores <- scaleTau2(fit.r$resids/(1-fit.r$hat.tr), c2 = 5)^2
-    GCV.scores <- sum( fit.r$weights*fit.r$resids^2/((1-mean(fit.r$hat.tr))^2) )/sum(fit.r$weights)
+    # GCV.scores <- sum( fit.r$weights*lred^2 )
     # GCV.scores <- median( fit.r$resids/(1-fit.r$hat.tr))
     # GCV.scores <- weighted.mean(lred^2, wt = fit.r$weights  )
-    # GCV.scores <- weighted.mean(fit.r$resids^2/((1-fit.r$hat.tr)^2), wt = fit.r$weights  )
+    # GCV.scores <- mean(fit.r$weights*fit.r$resids^2/((1-fit.r$hat.tr)^2)  )
     # sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/((1-fit.r$hat.tr)^2)-GCV.scores)^2))/sqrt(n)
-    # weights <- Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)/scale^2
-    # NP <- scale(t(x.p), center = FALSE, scale = c(1/weights))%*%x.p
-    # hessian.m <-  NP + 2*lambda*p.m
-    # gr <- -Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 0)/scale
-    # Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr*c(fit.r$resids/scale^2)) )%*%x.p #+ 2*lambda*p.m%*%fit.r$beta%*%t(rep(1, length(y)))%*%diag(fit.r$resids/scale)%*%x.p/n
-    # # Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr^2) )%*%x.p
-    # hat.tr <- sum(diag(  -solve(hessian.m)%*%Q.m   )) # GIC
-    # # hat.tr <- sum(diag(  solve(hessian.m)%*%NP   )) # AIC
-    # GCV.scores <- 2*sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + log(n)*hat.tr
+    # 
+    # GCV.scores <- mean( Mpsi(fit.r$resids/scale, deriv = 0, cc = k, psi = "bisquare")^2 /(1-fit.r$hat.tr)^2 )
+    
+    
+    weights <- Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)/scale^2
+    NP <- scale(t(x.p), center = FALSE, scale = c(1/weights))%*%x.p
+    hessian.m <-  NP + 2*lambda*p.m
+    gr <- -Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 0)/scale
+    Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr*c(fit.r$resids/scale^2)) )%*%x.p #+ 2*lambda*p.m%*%fit.r$beta%*%t(rep(1, length(y)))%*%diag(fit.r$resids/scale)%*%x.p/n
+    # Q.m <-  scale(t(x.p), center = FALSE, scale = 1/(gr^2) )%*%x.p
+    hat.tr <- sum(diag(  -solve(hessian.m)%*%Q.m   )) # GIC
+    # hat.tr <- sum(diag(  solve(hessian.m)%*%NP   )) # AIC
+    GCV.scores <- 2*sum(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = -1))   + log(n)*hat.tr
     return(GCV.scores)
   }
 
@@ -113,8 +125,8 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2){
   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
 
 # 
-#   hs <- diag(x.p%*%solve( t(x.p)%*%diag(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1))%*%x.p + 2*lambda1*p.m, t(x.p) ))
-#   lred <- fit.r$resids*( 1 + fit.r$weights*hs/(1-hs*Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)) )
+  # hs <- diag(x.p%*%solve( t(x.p)%*%diag(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1))%*%x.p + 2*lambda1*p.m, t(x.p) ))
+  # lred <- fit.r$resids*( 1 + fit.r$weights*hs/(1-hs*Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)) )
 #   
 #   sdw <- sqrt(sum(fit.r$weights*(lred^2-GCV(lambda1))^2/(sum(fit.r$weights) - sum(fit.r$weights^2)/sum(fit.r$weights)) ))/sqrt(n)
 #   #
@@ -123,11 +135,12 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2){
 # # M <- sum(fit.r$weights !=0)
 #   # sdw <- sqrt(wtd.var(lred^2, weights = fit.r$weights,  normwt=TRUE))/sqrt(n)
 #   # sdw <- sqrt(wtd.var(fit.r$resids/(1-fit.r$hat.tr), weights = fit.r$weights))/sqrt(n)
-sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/(1-mean(fit.r$hat.tr))^2-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
+# sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/(1-mean(fit.r$hat.tr))^2-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
+# sdw <- sqrt(sum(fit.r$weights*(lred^2-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
 #   # # # sdw <- sqrt(sum(fit.r$weights*(fit.r$resids^2/((1-fit.r$hat.tr)^2)-GCV(lambda1))^2)/sum(fit.r$weights))/sqrt(n)
-thr <- GCV(lambda1) + 2*sdw
-lambda1 <- max( lambda.cand[lambda.e <= thr]  )
-fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
+# thr <- GCV(lambda1) + 1*sdw
+# lambda1 <- max( lambda.cand[lambda.e <= thr]  )
+# fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
 
   beta.hat <- b.sp.e%*%fit.r$beta
   # plot(beta.hat)
