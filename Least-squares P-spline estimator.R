@@ -1,6 +1,6 @@
 require(fda)
 
-ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2){
+ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 1){
   
   x <- as.matrix(x)
   n <- length(y)
@@ -23,7 +23,7 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2){
     return(GCV.scores)
   }
   
-  lambda.cand <- c(2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
+  lambda.cand <- c(1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
                    2e-05, 6e-05, 9e-05,  2e-04, 6e-04, 9e-04, 2e-03, 6e-03, 9e-03,  2e-02, 6e-02, 9e-02,
                    2e-01, 6e-01, 9e-01, 3, 50)
   
@@ -38,11 +38,15 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2){
   hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
   resids <- y - x.a%*%ls.est
   sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
-  thr <- GCV(lambda1) + 2*sdw
+  thr <- GCV(lambda1) + n.se*sdw
   lambda1 <- max( lambda.cand[lambda.e <= thr]  )
-  
+
   ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
   hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
   resids <- y - x.a%*%ls.est
   
+  beta.hat <- b.sp.e%*%ls.est[-1]/dim(x)[2]
+  
+  return(list(bh = beta.hat, beta = ls.est[-1], alpha = ls.est[1], lam = lambda1, 
+              resids = resids, b.sp.e = b.sp.e))
 }
