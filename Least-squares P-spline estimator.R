@@ -37,14 +37,17 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 1){
   ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
   hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
   resids <- y - x.a%*%ls.est
-  sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
-  thr <- GCV(lambda1) + n.se*sdw
-  lambda1 <- max( lambda.cand[lambda.e <= thr]  )
-
-  ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
-  hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
-  resids <- y - x.a%*%ls.est
   
+  if(n.se > 0){
+    sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
+    thr <- GCV(lambda1) + n.se*sdw
+    lambda1 <- max( lambda.cand[lambda.e <= thr]  )
+    
+    ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
+    hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
+    resids <- y - x.a%*%ls.est
+  }
+
   beta.hat <- b.sp.e%*%ls.est[-1]/dim(x)[2]
   
   return(list(bh = beta.hat, beta = ls.est[-1], alpha = ls.est[1], lam = lambda1, 

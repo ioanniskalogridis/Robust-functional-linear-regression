@@ -19,22 +19,22 @@ matr1 <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
 matr3 <- matrix(NA, nrow = p, ncol = Nrep)
 
-for(f in 1:Nrep){
+for(f in 106:Nrep){
   message('Iter = ', f, ' of ', Nrep)
   X0 <- matrix(rnorm(n*p), nrow = n, ncol = p)
   for(i in 1:n){
     for(j in 1:49){
-      X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
-      #X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 5)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
+      # X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
+      X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 5)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
     }
   }
   y0 = X0%*%alpha
-  y <- y0 + rnorm(n)
+  # y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
-  # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
+  y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
+  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   # fit2 <- fpcr(y, xfuncs = X0)
-  fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
+  fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   
   mse1[f] <- mean( (alpha-fit1$bh)^2 )  
   # mse2[f] <- mean( (alpha-fit2$fhat)^2 )
@@ -49,14 +49,17 @@ for(f in 1:Nrep){
   # matr2[, f] <- fit2$fhat
   matr3[, f] <- fit3$bh
 }
-mean(mse1, na.rm = TRUE)*Nrep
-mean(mse2, na.rm =TRUE)*Nrep
+mean(mse1, na.rm = TRUE)*1000
+mean(mse2, na.rm =TRUE)*1000
+mean(mse3, na.rm =TRUE)*1000
 
-median(mse1, na.rm = TRUE)*Nrep
-median(mse2, na.rm = TRUE)*Nrep
+median(mse1, na.rm = TRUE)*1000
+median(mse2, na.rm = TRUE)*1000
+median(mse3, na.rm = TRUE)*1000
 
 matplot(grid, matr1, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
-matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+# matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr3, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 
 ##################################################################################################################################################
 # Second experiment
@@ -68,11 +71,13 @@ alpha = grid^2*dnorm(grid)
 
 mse1 <- rep(NA, Nrep)
 mse2 <- rep(NA, Nrep)
+mse3 <- rep(NA, Nrep)
 
 matr1 <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
+matr3 <- matrix(NA, nrow = p, ncol = Nrep)
 
-for(f in 1:Nrep){
+for(f in 617:Nrep){
   message('Iter = ', f, ' of ', Nrep)
   X0 <- matrix(rnorm(n*p), nrow = n, ncol = p)
   for(i in 1:n){
@@ -85,27 +90,34 @@ for(f in 1:Nrep){
   y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), interval = c(70, 130))
-  fit2 <- fpcr(y, xfuncs = X0)
-
-  mse1[f] <- mean( (alpha-fit1$bh/p)^2 )  
-  mse2[f] <- mean( (alpha-fit2$fhat)^2 )
+  fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  # fit2 <- fpcr(y, xfuncs = X0)
+  fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  
+  mse1[f] <- mean( (alpha-fit1$bh)^2 )  
+  # mse2[f] <- mean( (alpha-fit2$fhat)^2 )
+  mse3[f]  <- mean( (alpha-fit3$bh)^2 ) 
   
   plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
-  lines(grid, fit1$bh/p, lwd = 3, col = "red")
-  lines(grid, fit2$fhat, col = "blue", lwd = 3)
+  lines(grid, fit1$bh, lwd = 3, col = "red")
+  # lines(grid, fit2$fhat, col = "blue", lwd = 3)
+  lines(grid, fit3$bh, lwd = 3, col = "blue")
   
-  matr1[, f] <- fit1$bh/p
-  matr2[, f] <- fit2$fhat
+  matr1[, f] <- fit1$bh
+  # matr2[, f] <- fit2$fhat
+  matr3[, f] <- fit3$bh
 }
-mean(mse1, na.rm = TRUE)*Nrep
-mean(mse2, na.rm =TRUE)*Nrep
+mean(mse1, na.rm = TRUE)*1000
+mean(mse2, na.rm =TRUE)*1000
+mean(mse3, na.rm =TRUE)*1000
 
-median(mse1, na.rm = TRUE)*Nrep
-median(mse2, na.rm = TRUE)*Nrep
+median(mse1, na.rm = TRUE)*1000
+median(mse2, na.rm = TRUE)*1000
+median(mse3, na.rm = TRUE)*1000
 
 matplot(grid, matr1, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
-matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+# matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr3, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 
 ##################################################################################################################################################
 # Third experiment
@@ -136,7 +148,7 @@ for(f in 1:Nrep){
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
   fit2 <- fpcr(y, xfuncs = X0)
-
+  
   mse1[f] <- mean( (alpha-fit1$bh/p)^2 )  
   mse2[f] <- mean( (alpha-fit2$fhat)^2 )
   
@@ -186,7 +198,7 @@ for(f in 1:Nrep){
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)))
   fit2 <- fpcr(y, xfuncs = X0)
-
+  
   mse1[f] <- mean( (alpha-fit1$bh/p)^2 )  
   mse2[f] <- mean( (alpha-fit2$fhat)^2 )
   
