@@ -22,26 +22,29 @@ y11 <- glass[, 11]
 y12 <- glass[, 12]
 y13 <- glass[, 13]
 
-# library(reshape2)
-# library(ggplot2)
-# data <- data.frame(t(x))
-# data$id <- 1:nrow(data)
-# #reshape to long format
-# plot_data <- melt(data, id.var="id" )
-# #plot
-# gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 1.2)
-# gr <- gr + theme_bw(base_size = 35) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
-# gr <- gr + stat_function(aes(x = id, y = value), fun = mu, size = 1.4, colour = "black") #+ ylim(-6, 6)
-# gr
+### Figure 3 in the paper ####
+library(reshape2)
+library(ggplot2)
+data <- data.frame(t(x))
+data$id <- 1:nrow(data)
+#reshape to long format
+plot_data <- melt(data, id.var="id" )
+#plot
+gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 1.2)
+gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
+gr <- gr + stat_function(aes(x = id, y = value), fun = mu, size = 1.4, colour = "black") #+ ylim(-6, 6)
+gr
 
+data <- data.frame(y3)
+gr <- ggplot(data, aes(x = y3)) + geom_histogram(fill = "gray") + theme_bw(base_size = 40) + labs(x = "")
+gr <- gr +  theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))
+gr
 
-
-
-par(mar = c(3.1, 3.1, 3.1, 1.1)); par(mgp = c(3.8, 1, 0))
-
-hist(y3, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
-hist(y5, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
-hist(y12, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
+# par(mar = c(3.1, 3.1, 3.1, 1.1)); par(mgp = c(3.8, 1, 0))
+# 
+# hist(y3, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
+# hist(y5, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
+# hist(y12, col = "gray", main = "", cex.lab = 2, cex.axis = 2) ; grid()
 
 fit1 <- m.pen.sp(x = x, y = y1, norder = 4, q = 2, k = 4.685)
 plot(fit1$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
