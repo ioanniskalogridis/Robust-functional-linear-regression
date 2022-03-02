@@ -244,8 +244,6 @@ gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0, 
 gr <- gr + geom_line(data = data2, aes(x = id, y = alpha, group = 1), size = 1.2, inherit.aes = FALSE)
 gr
 
-library(reshape2)
-library(ggplot2)
 data2 <- data.frame(id = grid, alpha)
 data <- data.frame(matr2)
 data$id <- 1:nrow(data)/nrow(data)
