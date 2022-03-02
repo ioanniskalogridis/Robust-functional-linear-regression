@@ -32,7 +32,6 @@ plot_data <- melt(data, id.var="id" )
 #plot
 gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 1.2)
 gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
-gr <- gr + stat_function(aes(x = id, y = value), fun = mu, size = 1.4, colour = "black") #+ ylim(-6, 6)
 gr
 
 data <- data.frame(y3)
