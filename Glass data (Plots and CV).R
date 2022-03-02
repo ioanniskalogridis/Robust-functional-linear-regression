@@ -59,6 +59,7 @@ plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt
 fit41 <- fpcr(y = y4, xfuncs = x)
 lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
 
+require(ggplot2)
 data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$fhat)
 data$x <- 1:dim(x)[2]/dim(x)[2]
 gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
@@ -83,12 +84,12 @@ fit71 <- fpcr(y = y7, xfuncs = x)
 lines(fit71$fhat, lwd = 3, col = "red", lty = 2)
 
 fit8 <- m.pen.sp(x = x, y = y8, norder = 4, nbasis = 40, q = 2, k = 4.685)
-plot(fit8$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+plot(fit8$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit81 <- fpcr(y = y8, xfuncs = x)
 lines(fit81$fhat, lwd = 3, col = "red", lty = 2)
 
 fit9 <- m.pen.sp(x = x, y = y9, norder = 4, nbasis = 40, q = 2, k = 4.685)
-plot(fit9$bh/dim(x)[2], type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+plot(fit9$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit91 <- fpcr(y = y9, xfuncs = x)
 lines(fit91$fhat, lwd = 3, col = "red", lty = 2)
 
@@ -107,11 +108,27 @@ plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yax
 fit121 <- fpcr(y = y12, xfuncs = x)
 lines(fit121$fhat, lwd = 3, col = "red", lty = 2)
 
+require(ggplot2)
+data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$fhat)
+data$x <- 1:dim(x)[2]/dim(x)[2]
+gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
+gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
+gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
+gr
+
+
 fit13 <- m.pen.sp(x = x, y = y13, norder = 4, n.se = 0)
 plot(fit13$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit131 <- fpcr(y = y13, xfuncs = x)
 lines(fit131$fhat, lwd = 3, col = "red", lty = 2)
 
+require(ggplot2)
+data <- data.frame(fit.r = fit13$bh, fit.ls = fit131$fhat)
+data$x <- 1:dim(x)[2]/dim(x)[2]
+gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
+gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
+gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
+gr
 
 
 
