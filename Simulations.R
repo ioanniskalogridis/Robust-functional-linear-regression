@@ -10,6 +10,7 @@ grid <- seq(0, 1, length = p)
 
 # First experiment
 alpha <- sin(2*pi*grid) 
+alpha = grid^2*dnorm(grid)
 
 mse1 <- rep(NA, Nrep)
 mse2 <- rep(NA, Nrep)
@@ -19,23 +20,35 @@ matr1 <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
 matr3 <- matrix(NA, nrow = p, ncol = Nrep)
 
-for(f in 106:Nrep){
+for(f in 1:Nrep){
   message('Iter = ', f, ' of ', Nrep)
-  X0 <- matrix(rnorm(n*p), nrow = n, ncol = p)
+  X0 <- sqrt(2)*matrix(rnorm(n*p), nrow = n, ncol = p)
   for(i in 1:n){
-    for(j in 1:49){
+    for(j in 2:50){
       # X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
-      X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 5)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
+      X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 3)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
     }
   }
   y0 = X0%*%alpha
-  # y <- y0 + rnorm(n)
+  y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
-  y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
+  # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   # fit2 <- fpcr(y, xfuncs = X0)
   fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   
+  # require(reshape2)
+  # require(ggplot2)
+  # data <- data.frame(t(X0))
+  # data$id <- 1:nrow(data)/nrow(data)
+  # #reshape to long format
+  # plot_data <- melt(data, id.var="id" )
+  # #plot
+  # gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 1.2)
+  # gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
+  # gr <- gr + stat_function(aes(x = id, y = value), fun = mu, size = 1.4, colour = "black") #+ ylim(-6, 6)
+  # gr
+
   mse1[f] <- mean( (alpha-fit1$bh)^2 )  
   # mse2[f] <- mean( (alpha-fit2$fhat)^2 )
   mse3[f]  <- mean( (alpha-fit3$bh)^2 ) 
@@ -49,13 +62,14 @@ for(f in 106:Nrep){
   # matr2[, f] <- fit2$fhat
   matr3[, f] <- fit3$bh
 }
-mean(mse1, na.rm = TRUE)*1000
-mean(mse2, na.rm =TRUE)*1000
-mean(mse3, na.rm =TRUE)*1000
+mean(mse3, na.rm =TRUE)*1000 ; median(mse3, na.rm = TRUE)*1000
+mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
+# mean(mse2, na.rm =TRUE)*1000
 
-median(mse1, na.rm = TRUE)*1000
-median(mse2, na.rm = TRUE)*1000
-median(mse3, na.rm = TRUE)*1000
+
+
+# median(mse2, na.rm = TRUE)*1000
+
 
 matplot(grid, matr1, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 # matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
