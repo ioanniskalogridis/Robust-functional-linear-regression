@@ -195,7 +195,7 @@ mse2 <- rep(NA, Nrep)
 matr1 <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
 
-for(f in 1:Nrep){
+for(f in 113:Nrep){
   message('Iter = ', f, ' of ', Nrep)
   X0 <- sqrt(2)*matrix(rnorm(n*p), nrow = n, ncol = p)
   for(i in 1:n){
@@ -227,6 +227,35 @@ for(f in 1:Nrep){
 mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
 mean(mse2, na.rm =TRUE)*1000 ;median(mse2, na.rm = TRUE)*1000
 
-
 matplot(grid, matr1, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+
+library(reshape2)
+library(ggplot2)
+data2 <- data.frame(id = grid, alpha)
+data <- data.frame(matr1)
+data$id <- 1:nrow(data)/nrow(data)
+#reshape to long format
+plot_data <- melt(data, id.var="id" )
+#plot
+gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 2) + ylim(-15, 43)
+gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
+# f0f <- function(x) -dnorm(x, mean=.2, sd=.03) + 3*dnorm(x, mean=.5, sd=.03) + dnorm(x, mean=.75, sd=.04)
+gr <- gr + geom_line(data = data2, aes(x = id, y = alpha, group = 1), size = 1.2, inherit.aes = FALSE)
+gr
+
+library(reshape2)
+library(ggplot2)
+data2 <- data.frame(id = grid, alpha)
+data <- data.frame(matr2)
+data$id <- 1:nrow(data)/nrow(data)
+#reshape to long format
+plot_data <- melt(data, id.var="id" )
+#plot
+gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 2) + ylim(-15, 43)
+gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
+# f0f <- function(x) -dnorm(x, mean=.2, sd=.03) + 3*dnorm(x, mean=.5, sd=.03) + dnorm(x, mean=.75, sd=.04)
+gr <- gr + geom_line(data = data2, aes(x = id, y = alpha, group = 1), size = 1.2, inherit.aes = FALSE)
+gr
+
+
