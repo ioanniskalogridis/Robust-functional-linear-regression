@@ -4,13 +4,13 @@ require(MASS)
 require(EnvStats)
 
 Nrep <- 1000
-n <- 150
+n <- 300
 p <- 100
 grid <- seq(0, 1, length = p)
 
 # First experiment
 alpha <- sin(2*pi*grid) 
-alpha = grid^2*dnorm(grid)
+# alpha = grid^2*dnorm(grid)
 
 mse1 <- rep(NA, Nrep)
 mse2 <- rep(NA, Nrep)
@@ -22,11 +22,11 @@ matr3 <- matrix(NA, nrow = p, ncol = Nrep)
 
 for(f in 1:Nrep){
   message('Iter = ', f, ' of ', Nrep)
-  X0 <- sqrt(2)*matrix(rnorm(n*p), nrow = n, ncol = p)
+  X0 <- matrix(rnorm(n*p), nrow = n, ncol = p)
   for(i in 1:n){
-    for(j in 2:50){
-      # X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
-      X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 3)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
+    for(j in 1:49){
+      X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
+      # X0[i, ] <- X0[i, ] +  1*j^{-1}*rt(1, df = 5)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x)) # For leverage contamination
     }
   }
   y0 = X0%*%alpha
@@ -37,16 +37,6 @@ for(f in 1:Nrep){
   # fit2 <- fpcr(y, xfuncs = X0)
   fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   
-  # require(reshape2)
-  # require(ggplot2)
-  # data <- data.frame(t(X0))
-  # data$id <- 1:nrow(data)/nrow(data)
-  # #reshape to long format
-  # plot_data <- melt(data, id.var="id" )
-  # gr <- ggplot(plot_data, aes(x=id, y=value, group=variable, colour=variable)) + geom_line(col = "gray", size = 1.2)
-  # gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
-  # gr
-
   mse1[f] <- mean( (alpha-fit1$bh)^2 )  
   # mse2[f] <- mean( (alpha-fit2$fhat)^2 )
   mse3[f]  <- mean( (alpha-fit3$bh)^2 ) 
