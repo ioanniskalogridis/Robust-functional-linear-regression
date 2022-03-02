@@ -113,8 +113,14 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se =
   lambda.cand <- c(1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
                    2e-05, 6e-05, 9e-05,  2e-04, 6e-04, 9e-04, 2e-03, 6e-03, 9e-03,  2e-02, 6e-02, 9e-02,
                    2e-01, 6e-01, 9e-01, 3, 50)
-  
-  lambda.e <- sapply(lambda.cand, FUN = GCV)
+  lambda.e <- rep(NA, lambda.cand)
+  for(e in 1:length(lambda.cand)){
+    lambda.e[e] <- try(GCV(lambda.cand[e]), silent = TRUE)
+  }
+  lambda.e <- as.numeric(lambda.e)
+  wm <- which.min(lambda.e)
+
+  # lambda.e <- try(sapply(lambda.cand, FUN = GCV), silent = TRUE)
   wm <- which.min(lambda.e)
   if(wm==1){
     wm <- 2
