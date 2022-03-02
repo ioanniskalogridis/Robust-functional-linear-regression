@@ -35,7 +35,7 @@ gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0, 
 gr
 
 data <- data.frame(y3)
-gr <- ggplot(data, aes(x = y3)) + geom_histogram(fill = "gray") + theme_bw(base_size = 40) + labs(x = "", y = "Frequency")
+gr <- ggplot(data, aes(x = y3)) + geom_histogram(fill = "gray", col = "black") + theme_bw(base_size = 40) + labs(x = "", y = "Frequency")
 gr <- gr +  theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))
 gr
 
@@ -58,6 +58,14 @@ fit4 <- m.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
 plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- fpcr(y = y4, xfuncs = x)
 lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
+
+data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$fhat)
+data$x <- 1:dim(x)[2]/dim(x)[2]
+gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
+gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
+gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
+gr
+
 
 fit5 <- m.pen.sp(x = x, y = y5, norder = 4, q = 2, k = 4.685)
 plot(fit5$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
