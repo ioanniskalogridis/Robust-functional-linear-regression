@@ -148,6 +148,12 @@ predict.mpen <- function(fit.r, x){
   return(pred.values)
 }
 
+predict.ls <- fuction(fit.ls, x){
+  pred.values <- fir.ls$alpha + x%*%fit.ls$bh
+  return(pred.values)
+}
+
+
 cv.function<- function(x, y, nfolds, int){
   x <- as.matrix(x)
   splits <- split(1:dim(x)[1], sample( rep(1:nfolds, times= rep( round(dim(x)[1]/nfolds), nfolds ) )) )
