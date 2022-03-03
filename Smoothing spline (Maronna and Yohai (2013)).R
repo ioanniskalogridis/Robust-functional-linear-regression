@@ -18,5 +18,6 @@ m.sm.sp <- function(x, y, t, m = 2){
   fit.mm <- pensem_cv(x = Z, y = y, alpha = 0, cc = 4.685, nlambda = 20)
   alpha.c = c(p*solve(C.m)%*%fit.mm$estimates[[1]]$beta)
   beta.hat <- b.sp.e%*%proj.bspline%*%alpha.c
-  
+  resids <- y - fit.mm$estimates[[1]]$intercept - Z%*%fit.mm$estimates[[1]]$beta
+  return(list(bh = beta.hat, resids = resids, scale = fit.mm$scale))
 }
