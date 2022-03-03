@@ -60,7 +60,10 @@ for(f in 1:Nrep){
   mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
   
   plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
-
+  lines(grid, fit.mpen$bh, lwd = 3, col = "blue")
+  lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
+  lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
+  
   matr1[, f] <- fit1$bh
   matr2[, f] <- fit2$fhat
   matr3[, f] <- fit3$bh
