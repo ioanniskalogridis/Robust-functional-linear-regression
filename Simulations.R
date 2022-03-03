@@ -3,7 +3,7 @@ require(fda)
 require(MASS)
 require(EnvStats)
 
-Nrep <- 1000
+Nrep <- 50
 n <- 150
 p <- 100
 grid <- seq(0, 1, length = p)
