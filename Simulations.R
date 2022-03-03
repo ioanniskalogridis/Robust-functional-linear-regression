@@ -9,14 +9,16 @@ p <- 100
 grid <- seq(0, 1, length = p)
 
 # First experiment
-alpha <- sin(2*pi*grid) 
+# alpha <- sin(2*pi*grid) 
 alpha = grid^2*dnorm(grid)
 
-mse1 <- rep(NA, Nrep)
-mse2 <- rep(NA, Nrep)
-mse3 <- rep(NA, Nrep)
+mse.fpcr <- rep(NA, Nrep)
+mse.ls <- rep(NA, Nrep)
+mse.mpen <- rep(NA, Nrep)
+mse.munpen <- rep(NA, Nrep)
+mse.smsp <- rep(NA, Nrep)
 
-matr1 <- matrix(NA, nrow = p, ncol = Nrep)
+matr.fpcr <- matrix(NA, nrow = p, ncol = Nrep)
 matr2 <- matrix(NA, nrow = p, ncol = Nrep)
 matr3 <- matrix(NA, nrow = p, ncol = Nrep)
 
@@ -34,8 +36,9 @@ for(f in 1:Nrep){
   # y <- y0 + rt(n, df = 3)
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   fit1 <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
-  # fit2 <- fpcr(y, xfuncs = X0)
+  fit2 <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
   fit3 <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
   
   # require(reshape2)
   # require(ggplot2)
@@ -48,21 +51,25 @@ for(f in 1:Nrep){
   # gr
 
   mse1[f] <- mean( (alpha-fit1$bh)^2 )  
-  # mse2[f] <- mean( (alpha-fit2$fhat)^2 )
-  mse3[f]  <- mean( (alpha-fit3$bh)^2 ) 
+  mse2[f] <- mean( (alpha-fit2$fhat)^2 )
+  mse3[f]  <- mean( (alpha-fit3$bh)^2 )
+  mse.smsp <- mean( (alpha-fit.smsp$bh)^2 )
+  
   
   plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
   lines(grid, fit1$bh, lwd = 3, col = "red")
-  # lines(grid, fit2$fhat, col = "blue", lwd = 3)
+  lines(grid, fit2$fhat, col = "blue", lwd = 3)
   lines(grid, fit3$bh, lwd = 3, col = "blue")
+  lines(grid, fit.smsp, lwd = 3, col = "green")
   
   matr1[, f] <- fit1$bh
-  # matr2[, f] <- fit2$fhat
+  matr2[, f] <- fit2$fhat
   matr3[, f] <- fit3$bh
+  matr.smsp[, f] <- fit.smsp$bh
 }
 mean(mse3, na.rm =TRUE)*1000 ; median(mse3, na.rm = TRUE)*1000
 mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
-# mean(mse2, na.rm =TRUE)*1000
+mean(mse2, na.rm =TRUE)*1000 ; median(mse2, na.rm = TRUE)*1000
 
 
 
