@@ -148,8 +148,8 @@ predict.mpen <- function(fit.r, x){
   return(pred.values)
 }
 
-predict.ls <- fuction(fit.ls, x){
-  pred.values <- fir.ls$alpha + x%*%fit.ls$bh
+predict.ls <- function(fit.ls, x){
+  pred.values <- fit.ls$alpha + x%*%fit.ls$bh
   return(pred.values)
 }
 
@@ -167,9 +167,11 @@ cv.function<- function(x, y, nfolds, int){
     y.test <- y[splits[[j]]]
     y.train <- y[-splits[[j]]]
     fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 4.685, q = 2, nbasis = round(min(40, length(y.train)/4)))
-    fit.ls <- fpcr(y = y.train, x = x.train)
+    # fit.ls <- fpcr(y = y.train, x = x.train, method = "GCV.Cp", pve = 0.999)
+    fit.ls <- ls.pen.sp(x = x.train, y = y.train,  norder = 4, q = 2, nbasis = round(min(40, length(y.train)/4)))
     pred.values.r <- predict.mpen( fit.r, x.test)
-    pred.values.ls <- as.numeric(fit.ls$undecor.coef) +  x.test%*%fit.ls$fhat
+    # pred.values.ls <- as.numeric(fit.ls$undecor.coef) +  x.test%*%fit.ls$fhat
+    pred.values.ls <- predict.ls(fit.ls, x.test)
     rmspe.r[j] <- sqrt(u.tr( (y.test-pred.values.r)^2, 0.1 ))
     rmpse.ls[j] <- sqrt(u.tr( (y.test-pred.values.ls)^2,0.1 ))
   }
@@ -210,7 +212,6 @@ cv.function(x, y12, 5)
 cv.function(x, y13, 5)
 
 
-install.packages("fda.usc")
 library(fda.usc)
 data(tecator)
 x <- tecator$absorp.fdata
@@ -219,7 +220,7 @@ x <- x$data
 y <- tecator$y
 y <- y[, 1]
 matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
-fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 3.44)
+fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 4.685)
 fit.ls <- ls.pen.sp(x, y, norder = 4, nbasis = NULL, q  = 2)
 plot(fit1$bh, type = "l", col = "blue", lwd = 3)
 lines(fit.ls$bh, type = "l", col = "red", lwd = 3)
