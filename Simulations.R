@@ -64,10 +64,11 @@ for(f in 1:Nrep){
   lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
   lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
   
-  matr1[, f] <- fit1$bh
-  matr2[, f] <- fit2$fhat
-  matr3[, f] <- fit3$bh
+  matr.mpen[, f] <- fit.mpen$bh
+  matr.fpcr[, f] <- fit.fpcr$fhat
+  matr.ls[, f] <- fit.ls$bh
   matr.smsp[, f] <- fit.smsp$bh
+  matr.munp[, f] <- fit.munp$bh
 }
 mean(mse3, na.rm =TRUE)*1000 ; median(mse3, na.rm = TRUE)*1000
 mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
