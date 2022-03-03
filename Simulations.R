@@ -19,8 +19,10 @@ mse.munpen <- rep(NA, Nrep)
 mse.smsp <- rep(NA, Nrep)
 
 matr.fpcr <- matrix(NA, nrow = p, ncol = Nrep)
-matr2 <- matrix(NA, nrow = p, ncol = Nrep)
-matr3 <- matrix(NA, nrow = p, ncol = Nrep)
+matr.ls <- matrix(NA, nrow = p, ncol = Nrep)
+matr.mpen <- matrix(NA, nrow = p, ncol = Nrep)
+matr.munpen <- matrix(NA, nrow = p, ncol = Nrep)
+matr.smsp <- matrix(NA, nrow = p, ncol = Nrep)
 
 for(f in 1:Nrep){
   message('Iter = ', f, ' of ', Nrep)
