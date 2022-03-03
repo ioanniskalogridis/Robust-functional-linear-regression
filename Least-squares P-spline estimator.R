@@ -1,6 +1,6 @@
 require(fda)
 
-ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 1){
+ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 0){
   
   x <- as.matrix(x)
   n <- length(y)
