@@ -70,6 +70,11 @@ for(f in 1:Nrep){
   matr.smsp[, f] <- fit.smsp$bh
   matr.munp[, f] <- fit.munp$bh
 }
+mean(mse.mpen, na.rm = TRUE)*1000 ; median(mse.mpen, na.rm = TRUE)*1000
+mean(mse.ls, na.rm = TRUE)*1000 ; median(mse.ls, na.rm = TRUE)*1000
+mean(mse.fpcr, na.rm = TRUE)*1000 ; median(mse.fpcr, na.rm = TRUE)*1000
+mean(mse.smsp, na.rm = TRUE)*1000 ; median(mse.smsp, na.rm = TRUE)*1000
+
 mean(mse3, na.rm =TRUE)*1000 ; median(mse3, na.rm = TRUE)*1000
 mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
 mean(mse2, na.rm =TRUE)*1000 ; median(mse2, na.rm = TRUE)*1000
