@@ -6,7 +6,7 @@ require(EnvStats)
 Nrep <- 50
 n <- 150
 p <- 100
-grid <- seq(0, 1, length = p)
+grid <- seq(1/p, 1-1/p, length = p)
 
 # First experiment
 # alpha <- sin(2*pi*grid) 
