@@ -21,22 +21,3 @@ m.sm.sp <- function(x, y, t, m = 2){
   resids <- y - fit.mm$estimates[[1]]$intercept - Z%*%fit.mm$estimates[[1]]$beta
   return(list(bh = beta.hat, resids = resids, scale = fit.mm$scale))
 }
-
-bsb <- create.bspline.basis(rangeval = c(0,1), breaks = c(0,unique(x),1),
-                            norder = 2*m )
-bsbe <-  eval.basis(bsb, x)
-bsbe.d <- eval.basis(bsb, x, Lfdobj=2 )
-bsbe.dd <- rbind(bsbe.d[1, ], bsbe.d[100, ])
-# qr.d <- qr(bsbe.dd)
-sv <- svd(bsbe.dd, nv = 104)
-n.sp <- sv$v[, 3:104] #### Nullspace
-
-bsbe.dd%*%n.sp
-
-nat.basis <- bsbe%*%n.sp
-# beta <- rnorm(200)k
-Pen.matrix <- t(n.sp)%*%bsplinepen(bsb, Lfdobj = m)%*%n.sp
-
-# beta.hat <- nat.basis%*%solve(t(nat.basis)%*%nat.basis + 1e-08*Pen.matrix, t(nat.basis)%*%y)
-# plot(beta.hat, type = "l")
-# abline(v = 0.005025126)
