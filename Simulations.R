@@ -6,11 +6,12 @@ require(EnvStats)
 Nrep <- 50
 n <- 150
 p <- 100
-grid <- seq(1/p, 1-1/p, length = p)
+grid <- seq(0, 1, length = p)
 
-# First experiment
 # alpha <- sin(2*pi*grid) 
 alpha = grid^2*dnorm(grid)
+# alpha = 1/(1+exp(-20*(grid-0.5)))
+# alpha = -dnorm(grid, mean=.2, sd=.03) + 3*dnorm(grid, mean=.5, sd=.03) + dnorm(grid, mean=.75, sd=.04)
 
 mse.fpcr <- rep(NA, Nrep)
 mse.ls <- rep(NA, Nrep)
