@@ -211,6 +211,86 @@ cv.function(x, y11, 5)
 cv.function(x, y12, 5)
 cv.function(x, y13, 5)
 
+cv1 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv1[, j] <- unlist(cv.function(x, y1, 5))
+}
+rowMeans(cv1)
+
+cv2 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv2[, j] <- unlist(cv.function(x, y2, 5))
+}
+rowMeans(cv2)
+
+cv3 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv3[, j] <- unlist(cv.function(x, y3, 5))
+}
+rowMeans(cv3)
+
+cv4 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv4[, j] <- unlist(cv.function(x, y4, 5))
+}
+rowMeans(cv4)
+
+cv5 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv5[, j] <- unlist(cv.function(x, y5, 5))
+}
+rowMeans(cv5)
+
+cv6 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv6[, j] <- unlist(cv.function(x, y6, 5))
+}
+rowMeans(cv6)
+
+cv7 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv7[, j] <- unlist(cv.function(x, y7, 5))
+}
+rowMeans(cv7)
+
+cv8 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv8[, j] <- unlist(cv.function(x, y8, 5))
+}
+rowMeans(cv8)
+
+cv9 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv9[, j] <- unlist(cv.function(x, y9, 5))
+}
+rowMeans(cv9)
+
+cv10 <- matrix(NA, nrow = 2, ncol = 10)
+for(j in 1:10){
+  cv10[, j] <- unlist(cv.function(x, y10, 5))
+}
+rowMeans(cv10)
+
+cv11 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv11[, j] <- unlist(cv.function(x, y11, 5))
+}
+rowMeans(cv11)
+
+cv12 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:10){
+  cv12[, j] <- unlist(cv.function(x, y12, 5))
+}
+rowMeans(cv12)
+
+cv13 <- matrix(NA, nrow = 2, ncol = 20)
+for(j in 1:20){
+  cv13[, j] <- unlist(cv.function(x, y13, 5))
+}
+rowMeans(cv13)
+
+
+
 
 library(fda.usc)
 data(tecator)
