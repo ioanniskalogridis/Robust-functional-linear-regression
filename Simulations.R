@@ -35,9 +35,9 @@ for(f in 1:Nrep){
     }
   }
   y0 = X0%*%alpha
-  y <- y0 + rnorm(n)
+  # y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
-  # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
+  y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   fit.mpen <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   fit.fpcr <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
   fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
@@ -75,15 +75,7 @@ mean(mse.mpen, na.rm = TRUE)*1000 ; median(mse.mpen, na.rm = TRUE)*1000
 mean(mse.ls, na.rm = TRUE)*1000 ; median(mse.ls, na.rm = TRUE)*1000
 mean(mse.fpcr, na.rm = TRUE)*1000 ; median(mse.fpcr, na.rm = TRUE)*1000
 mean(mse.smsp, na.rm = TRUE)*1000 ; median(mse.smsp, na.rm = TRUE)*1000
-
-mean(mse3, na.rm =TRUE)*1000 ; median(mse3, na.rm = TRUE)*1000
-mean(mse1, na.rm = TRUE)*1000 ; median(mse1, na.rm = TRUE)*1000
-mean(mse2, na.rm =TRUE)*1000 ; median(mse2, na.rm = TRUE)*1000
-
-
-
-# median(mse2, na.rm = TRUE)*1000
-
+mean(mse.munp, na.rm = TRUE)*1000 ; median(mse.munp, na.rm = TRUE)*1000
 
 matplot(grid, matr1, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 # matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()

@@ -29,7 +29,7 @@ m.sm.sp <- function(x, y, t, m = 2){
   # lambda.i <- seq(p.l(lambda.min), p.l(lambda.max), length = 20)
   # lambda.m <- sapply(lambda.i, FUN = function(s) uniroot( function(x) p.l(x)- s, lower = 1e-14, upper = 1, tol = 1e-20 )$root )
   
-  fit.mm <- pensem_cv(x = Z, y = y, alpha = 0, cc = 4.685, nlambda = 50)
+  fit.mm <- pensem_cv(x = Z, y = y, alpha = 0, cc = 4.685, nlambda = 20)
   alpha.c = c(p*solve(C.m)%*%fit.mm$estimates[[1]]$beta)
   beta.hat <- b.sp.e%*%proj.bspline%*%alpha.c/p
   resids <- y - fit.mm$estimates[[1]]$intercept - Z%*%fit.mm$estimates[[1]]$beta
