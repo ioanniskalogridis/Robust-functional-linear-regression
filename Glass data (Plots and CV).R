@@ -56,11 +56,13 @@ lines(fit31$fhat, lwd = 3, col = "red", lty = 2)
 
 fit4 <- m.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
 plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
-fit41 <- fpcr(y = y4, xfuncs = x)
-lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
+fit41 <- ls.pen.sp(x = x, y = y4)
+lines(fit41$bh, lwd = 3, col = "red", lty = 2)
+# fit41 <- fpcr(y = y4, xfuncs = x)
+# lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
-data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$fhat)
+data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$bh)
 data$x <- 1:dim(x)[2]/dim(x)[2]
 gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
@@ -105,8 +107,9 @@ lines(fit111$fhat, lwd = 3, col = "red", lty = 2)
 
 fit12 <- m.pen.sp(x = x, y = y12, norder = 4)
 plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
-fit121 <- fpcr(y = y12, xfuncs = x)
-lines(fit121$fhat, lwd = 3, col = "red", lty = 2)
+fit121 <- ls.pen.sp(x = x, y = y12)
+lines(fit121$bh, lwd = 3, col = "red", lty = 2)
+# lines(fit121$fhat, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$fhat)
@@ -166,7 +169,7 @@ cv.function<- function(x, y, nfolds, int){
     x.train <- x[-splits[[j]], ]
     y.test <- y[splits[[j]]]
     y.train <- y[-splits[[j]]]
-    fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 4.685, q = 2, nbasis = round(min(40, length(y.train)/4)))
+    fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 3.44, q = 2, nbasis = round(min(40, length(y.train)/4)))
     # fit.ls <- fpcr(y = y.train, x = x.train, method = "GCV.Cp", pve = 0.999)
     fit.ls <- ls.pen.sp(x = x.train, y = y.train,  norder = 4, q = 2, nbasis = round(min(40, length(y.train)/4)))
     pred.values.r <- predict.mpen( fit.r, x.test)
@@ -211,80 +214,81 @@ cv.function(x, y11, 5)
 cv.function(x, y12, 5)
 cv.function(x, y13, 5)
 
-cv1 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cvrep <- 50
+cv1 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv1[, j] <- unlist(cv.function(x, y1, 5))
 }
 rowMeans(cv1)
 
-cv2 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv2 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv2[, j] <- unlist(cv.function(x, y2, 5))
 }
 rowMeans(cv2)
 
-cv3 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv3 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv3[, j] <- unlist(cv.function(x, y3, 5))
 }
 rowMeans(cv3)
 
-cv4 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv4 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv4[, j] <- unlist(cv.function(x, y4, 5))
 }
 rowMeans(cv4)
 
-cv5 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv5 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv5[, j] <- unlist(cv.function(x, y5, 5))
 }
 rowMeans(cv5)
 
-cv6 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv6 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv6[, j] <- unlist(cv.function(x, y6, 5))
 }
 rowMeans(cv6)
 
-cv7 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv7 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv7[, j] <- unlist(cv.function(x, y7, 5))
 }
 rowMeans(cv7)
 
-cv8 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv8 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv8[, j] <- unlist(cv.function(x, y8, 5))
 }
 rowMeans(cv8)
 
-cv9 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv9 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv9[, j] <- unlist(cv.function(x, y9, 5))
 }
 rowMeans(cv9)
 
-cv10 <- matrix(NA, nrow = 2, ncol = 10)
-for(j in 1:10){
+cv10 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv10[, j] <- unlist(cv.function(x, y10, 5))
 }
 rowMeans(cv10)
 
-cv11 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv11 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv11[, j] <- unlist(cv.function(x, y11, 5))
 }
 rowMeans(cv11)
 
-cv12 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:10){
+cv12 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv12[, j] <- unlist(cv.function(x, y12, 5))
 }
 rowMeans(cv12)
 
-cv13 <- matrix(NA, nrow = 2, ncol = 20)
-for(j in 1:20){
+  cv13 <- matrix(NA, nrow = 2, ncol = cvrep)
+for(j in 1:cvrep){
   cv13[, j] <- unlist(cv.function(x, y13, 5))
 }
 rowMeans(cv13)
