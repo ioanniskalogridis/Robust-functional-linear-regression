@@ -28,6 +28,7 @@ matr.smsp <- matrix(NA, nrow = p, ncol = Nrep)
 for(f in 1:Nrep){
   message('Iter = ', f, ' of ', Nrep)
   X0 <- sqrt(2)*matrix(rnorm(n*p), nrow = n, ncol = p)
+  # X0 <- sqrt(2)*matrix(rt(n*p, df = 3), nrow = n, ncol = p)
   for(i in 1:n){
     for(j in 2:50){
       X0[i, ] <- X0[i, ] + j^{-1}*rnorm(1, 0, 1)*sqrt(2)*sapply(grid, FUN= function(x) cos((j-1)*pi*x))
