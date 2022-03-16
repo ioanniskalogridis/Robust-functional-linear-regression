@@ -23,7 +23,7 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 0){
     return(GCV.scores)
   }
   
-  lambda.cand <- c(1e-12, 1e-11, 1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
+  lambda.cand <- c(1e-12, 1e-11, 1e-10, 1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
                    2e-05, 6e-05, 9e-05,  2e-04, 6e-04, 9e-04, 2e-03, 6e-03, 9e-03,  2e-02, 6e-02, 9e-02,
                    2e-01, 6e-01, 9e-01, 3, 50)
   
