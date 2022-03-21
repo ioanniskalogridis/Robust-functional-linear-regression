@@ -33,7 +33,7 @@ m.step <- function(x, y, tol = 1e-08, maxit = 200, resids.in, scale, k, p.m, lam
   return(list(beta = v1[-1], alpha = v1[1], hat.tr = hat.tr, resids = resids, weights = weights1))
 }
 
-m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se = 0){
+mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se = 0){
   
   x <- as.matrix(x)
   n <- length(y)
