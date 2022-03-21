@@ -10,20 +10,31 @@ Here is an example. First, load the functions mm.pen.sp and ls.pen.sp from the f
 # Tecator data
 
 require(fda.usc)
+
 data(tecator)
+
 x <- tecator$absorp.fdata
+
 x <- x$data
 
 y <- tecator$y
+
 y <- y[, 1]
+
 matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
+
 fit.mm <-  mm.pen.sp(x = x, y = y)
+
 fit.ls <- ls.pen.sp(x, y)
+
 plot(fit.mm$bh, type = "l", col = "blue", lwd = 3)
+
 lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3)
 
 hist(fit.mm$resids/fit.mm$scale)
+
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
+
 qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
 
 Notice that the outliers are much less visible from the least-squares residuals.
