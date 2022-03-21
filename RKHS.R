@@ -1,56 +1,15 @@
-library(pracma)
-#### RKHS estimator (Cai and Yuan 2010) and Shin et al. (2016) (Huber)
+#### RKHS estimator of Shin et al. (2016)
+#### The main function is based on the Tukey bisquare loss and initial values are provided with a Huber fit
+require(pracma)
 
 rho.huber <- function(x, k = 1.345) ifelse(abs(x)<= k, x^2, 2*k*abs(x)-k^2)
 psi.huber <- function(x, k = 1.345) ifelse(abs(x)<= k, x, k*sign(x))
-psi.logistic <- function(x) 2*(1-exp(-x))/(1+exp(-x))
-# psi.prime.huber <- function(x, k = 1.345) ifelse(abs(x)<= k, 1, 0)
-# chi.huber <- function(x, k = 1.345) x*psi.huber1(x, k = k) - rho.huber(x, k = k)
 weights.huber <- function(x, k = 1.345) ifelse( x==0, 1, psi.huber(x, k = k)/x)
-weights.logistic <- function(x) ifelse(x==0, 1, psi.logistic(x))
 
 kernel.rkhs <- function(s,t){
   kernel.rkhs = pmin(s, t)
   return(kernel.rkhs)
 }
-
-# flm.rkhs <- function(X, y, dom, lambda = NULL, interval = c(1e-08, 1e-02)){
-#   
-#   p = length(dom)
-#   n = length(y)
-#   
-#   Xbar = apply(X, 2, FUN = mean)
-#   ybar = mean(y)
-#   Xstar = X - rep(1, n)%*%t(Xbar)
-#   ystar = y - mean(y)
-#   
-#   T.m = matrix(NA, n, 2)
-#   T.m[, 1] = apply(Xstar, 1, FUN = function(y) trapz(dom/max(dom), y ) )
-#   T.m[, 2] = apply(Xstar, 1, FUN = function(y) trapz(dom/max(dom), y*dom/max(dom) ))
-#   
-#   kernel.rkhs.m = outer(dom/max(dom), dom/max(dom), FUN = kernel.rkhs)
-#   Sigma = (1/length(dom)^2)*Xstar%*%kernel.rkhs.m%*%t(Xstar)
-#   Pred.big = cbind(T.m, Sigma )
-#   
-#   A.matrix = cbind(matrix(0, dim(Sigma)[2]+2, 2), rbind(matrix(0, 2, dim(Sigma)[2]), Sigma)  )
-#   GCV = function(lambda){
-#     hat.matrix = Pred.big%*%ginv( t(Pred.big)%*%Pred.big + lambda *A.matrix  )%*%t(Pred.big)
-#     GCV.scores = mean((ystar-as.vector(hat.matrix%*%ystar))^2)/( (1-mean(diag(hat.matrix)))^2 )
-#     return(GCV.scores)
-#   }
-#   # lam <- seq(5e-05, 5e-04, len = 500)
-#   # GCV.l <- sapply(X = lam, FUN = GCV)
-#   # plot(lam, GCV.l, type = "l")
-#   lambda1 <- ifelse(is.null(lambda), optimize(f = GCV, interval = interval, tol = 1e-14)$minimum, lambda)
-#   
-#   est.beta = as.vector(ginv( t(Pred.big)%*%Pred.big + lambda1*A.matrix  )%*%t(Pred.big)%*%ystar)
-#   # est.beta <- SparseM::solve(  t(Pred.big)%*%Pred.big + lambda1*A.matrix, t(Pred.big)%*%ystar)
-#   beta = as.vector( est.beta[1] + est.beta[2]*dom/max(dom) + t(est.beta[3:length(est.beta)])%*%Xstar%*%kernel.rkhs.m/length(dom) )
-#   interc = mean(y) - 1/length(dom)*as.vector(Xbar%*%beta)
-#   resids = as.vector(y-rep(interc, length(y))-1/length(dom)*X%*%beta)
-#   
-#   return(list(beta = beta, lambda = lambda1, est.beta = est.beta, interc = interc, resids = resids, Pred.big = cbind(rep(1, length(y)), Pred.big) ))
-# }
 
 huber.reg.rkhs <- function(X, y, k = 1.345, tol = 1e-08, lambda, A.matrix, dom, maxit = 200, scale, 
                            krm, Pred.big, resids.in){
