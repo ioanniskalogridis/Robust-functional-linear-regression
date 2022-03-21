@@ -1,10 +1,7 @@
 #### RKHS estimator of Shin et al. (2016)
 #### The main function is based on the Tukey bisquare loss and initial values are provided with a Huber fit
 require(pracma)
-
-rho.huber <- function(x, k = 1.345) ifelse(abs(x)<= k, x^2, 2*k*abs(x)-k^2)
-psi.huber <- function(x, k = 1.345) ifelse(abs(x)<= k, x, k*sign(x))
-weights.huber <- function(x, k = 1.345) ifelse( x==0, 1, psi.huber(x, k = k)/x)
+require(MASS)
 
 kernel.rkhs <- function(s,t){
   kernel.rkhs = pmin(s, t)
@@ -24,7 +21,6 @@ huber.reg.rkhs <- function(X, y, k = 1.345, tol = 1e-08, lambda, A.matrix, dom, 
   while(istop == 0 & ic <= maxit){
     ic = ic + 1
     weights.in <- weights.huber(resids.in/scale, k = k)
-    
     X.w <- as.matrix(scale(t(Pred.big), center = FALSE, scale = 1/weights.in))
     M1 <-  X.w%*%Pred.big + 2*scale^2*lambda*A.matrix
     M2 <- X.w%*%as.matrix(y)
@@ -45,7 +41,7 @@ huber.reg.rkhs <- function(X, y, k = 1.345, tol = 1e-08, lambda, A.matrix, dom, 
               weights = weights1, resids = resids, interc = v1[1], est.beta = v1))
 }
 
-flm.rkhs.rob.h <- function(X, y, dom, k = 1.345, interval = c(1e-08, 1e-02), lambda= NULL){
+flm.rkhs.rob.h <- function(X, y, dom, k = 1.345, lambda= NULL){
   
   T.m = matrix(NA, n, 2)
   T.m[, 1] = apply(X, 1, FUN = function(y) trapz(dom/max(dom), y ) )
@@ -66,10 +62,20 @@ flm.rkhs.rob.h <- function(X, y, dom, k = 1.345, interval = c(1e-08, 1e-02), lam
     GCV.scores <- ( mean( fit.r$weights*(y-fit.r$fitted)^2  ))/((1-mean(diag(fit.r$hat.matrix)))^2)
     return(GCV.scores)
   }
-  # lam <- seq(1e-09, 5e-08, len = 500)
-  # GCV.l <- sapply(X = lam, FUN = GCV)
-  # plot(lam, GCV.l, type = "l")
-  lambda1 <- ifelse(is.null(lambda), optimize(f = GCV, interval = interval, tol = 1e-14)$minimum, lambda)
+  
+  lambda.cand <- c(1e-11, 1e-10, 1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
+                   2e-05, 6e-05, 9e-05,  2e-04, 6e-04, 9e-04, 2e-03, 6e-03, 9e-03,  2e-02, 6e-02, 9e-02,
+                   2e-01, 6e-01, 9e-01, 3, 50)
+  lambda.e <- rep(NA, length(lambda.cand))
+  for(e in 1:length(lambda.cand)){
+    lambda.e[e] <- try(GCV(lambda.cand[e]), silent = TRUE)
+  }
+  lambda.e <- as.numeric(lambda.e)
+  wm <- which.min(lambda.e)
+  if(wm==1){
+    wm <- 2
+  } else if(wm==length(lambda.cand)){wm <- (length(lambda.cand)-1)}
+  lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wm+1]) , tol = 1e-14)$minimum
   
   fit.rf <- huber.reg.rkhs(X = X,  y = y, lambda = lambda1, A.matrix = A.matrix, resids.in = resids.prelim, scale = scale,
                           k =  k, dom = dom, Pred.big = Pred.big, krm = kernel.rkhs.m)
@@ -122,7 +128,7 @@ flm.rkhs.rob.t <- function(X, y, dom, k = 4.6855, interval = c(1e-08, 1e-02), la
   Pred.big = cbind(rep(1, length(y)),T.m, Sigma )
   A.matrix = cbind(matrix(0, dim(Sigma)[2]+3, 3), rbind(matrix(0, 3, dim(Sigma)[2]), Sigma)  )
   
-  est.h <- flm.rkhs.rob.h(X = X, y = y, dom = dom, lambda = 1e-07)
+  est.h <- flm.rkhs.rob.h(X = X, y = y, dom = dom)
   resids.prelim<- as.vector(est.h$resids)
   scale <- mad(resids.prelim)
   
@@ -140,9 +146,6 @@ flm.rkhs.rob.t <- function(X, y, dom, k = 4.6855, interval = c(1e-08, 1e-02), la
     lambda.e[e] <- try(GCV(lambda.cand[e]), silent = TRUE)
   }
   lambda.e <- as.numeric(lambda.e)
-  wm <- which.min(lambda.e)
-  
-  # lambda.e <- try(sapply(lambda.cand, FUN = GCV), silent = TRUE)
   wm <- which.min(lambda.e)
   if(wm==1){
     wm <- 2
