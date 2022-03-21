@@ -304,13 +304,14 @@ x <- x$data
 y <- tecator$y
 y <- y[, 1]
 matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
-fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 4.685)
+fit.mm <-  m.pen.sp(x = x, y = y)
 fit.ls <- ls.pen.sp(x, y, norder = 4, nbasis = NULL, q  = 2)
-plot(fit1$bh, type = "l", col = "blue", lwd = 3)
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3)
+plot(fit.mm$bh, type = "l", col = "blue", lwd = 3)
+
+hist(fit.mm$resids)
 
 y <- tecator$y
-y <- y[, 2]
+y <- y[, 1]
 fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 3.44)
 fit.ls <- ls.pen.sp(x, y, norder = 4, nbasis = NULL, q  = 2)
 plot(fit1$bh, type = "l", col = "blue", lwd = 3)
