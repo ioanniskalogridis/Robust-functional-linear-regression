@@ -40,7 +40,7 @@ m.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se =
   nbasis = ifelse(is.null(nbasis),round(min(n/4, 40)), nbasis)
   b.sp <- create.bspline.basis(c(0, 1), nbasis = nbasis, norder = norder)
   b.sp.e <- eval.basis(seq(1/dim(x)[2], 1-1/dim(x)[2], len = dim(x)[2]), b.sp)
-  p.m <- bsplinepen(b.sp, Lfdobj = q ) #+ bsplinepen(b.sp, Lfdobj = 0 )
+  p.m <- bsplinepen(b.sp, Lfdobj = q ) 
   
   
   x.p <- x%*%b.sp.e/dim(x)[2]
