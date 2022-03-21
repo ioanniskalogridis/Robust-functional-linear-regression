@@ -311,7 +311,7 @@ lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3)
 
 hist(fit.mm$resids/fit.mm$scale)
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
-
+qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
 
 
 y <- tecator$y
