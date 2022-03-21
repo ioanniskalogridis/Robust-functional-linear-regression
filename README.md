@@ -5,7 +5,7 @@ This function implements the MM P-spline estimator used in Kalogridis and Van Ae
 The implementation uses an initial unpenalized S-estimator and then the penalized variant of IRLS in order to obtain the MM-estimator.
 Contact me at ioannis.kalogridis@kuleuven.be for remarks and/or suggestions.
 
-Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from the files "Main function (MM P-splines).R" and "Least-squares P-spline estimator.R" respectively.
+Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from the files "Main function (MM P-splines).R" and "Least-squares P-spline estimator.R", respectively.
 
 # Tecator data
 
