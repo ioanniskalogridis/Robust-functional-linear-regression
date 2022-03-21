@@ -7,7 +7,6 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 0){
   nbasis = ifelse(is.null(nbasis),round(min(n/4, 40)), nbasis)
   b.sp <- create.bspline.basis(c(0, 1), nbasis = nbasis, norder = norder)
   b.sp.e <- eval.basis(seq(1/dim(x)[2], 1-1/dim(x)[2], len = dim(x)[2]), b.sp)
-  # p.m <- t( diff(diag( (nbasis)) , differences = q ) )%*%diff(diag( (nbasis ) ), differences = q ) # + diag(nbasis)
   p.m <- bsplinepen(b.sp, Lfdobj = q )# + bsplinepen(b.sp, Lfdobj = 0 )
   
   x.p <- x%*%b.sp.e/dim(x)[2]
@@ -38,15 +37,16 @@ ls.pen.sp <- function(x, y, norder = 4, nbasis = NULL, q  = 2, n.se = 0){
   hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
   resids <- y - x.a%*%ls.est
   
-  if(n.se > 0){
-    sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
-    thr <- GCV(lambda1) + n.se*sdw
-    lambda1 <- max( lambda.cand[lambda.e <= thr]  )
-    
-    ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
-    hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
-    resids <- y - x.a%*%ls.est
-  }
+  # One (or more) standard error rules (not used)
+  # if(n.se > 0){
+  #   sdw <- sd(resids^2/(1-diag(hat.m))^2-GCV(lambda1))/sqrt(n)
+  #   thr <- GCV(lambda1) + n.se*sdw
+  #   lambda1 <- max( lambda.cand[lambda.e <= thr]  )
+  #   
+  #   ls.est <- solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a)%*%y)
+  #   hat.m <- x.a%*%solve(t(x.a)%*%x.a + lambda1*p.m.a, t(x.a))
+  #   resids <- y - x.a%*%ls.est
+  # }
 
   beta.hat <- b.sp.e%*%ls.est[-1]/dim(x)[2]
   
