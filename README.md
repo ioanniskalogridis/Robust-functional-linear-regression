@@ -7,11 +7,12 @@ Contact me at ioannis.kalogridis@kuleuven.be for remarks and/or suggestions.
 
 Here is an example. First, load the functions mm.pen.sp and ls.pen.sp from the files "Main function (MM P-splines).R" and "Least-squares P-spline estimator.R" respectively.
 
+# Tecator data
+
 require(fda.usc)
 data(tecator)
 x <- tecator$absorp.fdata
 x <- x$data
-# The tecator dataset is known to contain a large number of outliers
 
 y <- tecator$y
 y <- y[, 1]
@@ -24,4 +25,5 @@ lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3)
 hist(fit.mm$resids/fit.mm$scale)
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
 qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
-# Outliers are barely visible from the LS residuals
+
+Notice that the outliers are much less visible from the least-squares residuals.
