@@ -83,7 +83,6 @@ for(f in 1:Nrep){
   # lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
   # lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
   
-   Updated upstream
   # matr.mpen[, f] <- fit.mpen$bh
   # matr.fpcr[, f] <- fit.fpcr$fhat
   # matr.ls[, f] <- fit.ls$bh
