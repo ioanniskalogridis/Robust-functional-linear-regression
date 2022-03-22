@@ -38,7 +38,7 @@ for(f in 1:Nrep){
     }
   }
   y0 = X0%*%alpha
-  y <- y0 + rnorm(n)
+  # y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   # fit.mpen <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
