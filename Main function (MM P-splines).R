@@ -75,7 +75,11 @@ mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se 
     return(GCV.scores)
   }
   
+<<<<<<< Updated upstream
   lambda.cand <- c(1e-12, 1e-11, 1e-10, 1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
+=======
+  lambda.cand <- c(1e-11, 1e-10, 1e-09, 2e-08, 6e-08, 9e-08,  2e-07, 6e-07, 9e-07,  2e-06, 6e-06, 9e-06,
+>>>>>>> Stashed changes
                    2e-05, 6e-05, 9e-05,  2e-04, 6e-04, 9e-04, 2e-03, 6e-03, 9e-03,  2e-02, 6e-02, 9e-02,
                    2e-01, 6e-01, 9e-01, 3, 50)
   lambda.e <- rep(NA, length(lambda.cand))
@@ -91,6 +95,7 @@ mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se 
   } else if(wm==length(lambda.cand)){wm <- (length(lambda.cand)-1)}
   lambda1 <- optimize(f = GCV, interval = c(lambda.cand[wm-1], lambda.cand[wm+1]) , tol = 1e-14)$minimum
   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
+<<<<<<< Updated upstream
   
   # One (or more) standard error rules (not used)
   # if(n.se > 0){
@@ -104,6 +109,21 @@ mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se 
   #   lambda1 <- max( lambda.cand[lambda.e <= thr]  )
   #   fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
   # }
+=======
+
+  if(n.se > 0){
+    hs <- diag(x.p%*%solve( t(x.p)%*%diag(Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1))%*%x.p + 2*lambda1*p.m, t(x.p) ))
+    lred <- fit.r$resids*( 1 + fit.r$weights*hs/(1-hs*Mpsi(fit.r$resids/scale, cc = k, psi = "bisquare", deriv = 1)) )
+    sdw <- scaleTau2(fit.r$resids^2/(1-fit.r$hat.tr)^2 - GCV(lambda1), c2 = 5)/sqrt(n)
+    # sdw <- scaleTau2(lred^2 - GCV(lambda1), c2 = 5)/sqrt(n)
+    # # # sdw <- sum(fit.r$weights*(lred^2-GCV(lambda1))^2)/n
+    # # # sdw <- sqrt(sdw)
+    thr <- GCV(lambda1) + n.se*sdw
+    lambda1 <- max( lambda.cand[lambda.e <= thr]  )
+    fit.r <- m.step(x.p, y, resids.in = resids.in, k = k, p.m = p.m, scale = scale, lambda = lambda1)
+  }
+  # sdw <- scaleTau2(lred^2 - GCV(lambda1), c2 = 5)/sqrt(n)
+>>>>>>> Stashed changes
 
   beta.hat <- b.sp.e%*%fit.r$beta/dim(x)[2]
   return(list(bh = beta.hat, beta = fit.r$beta, alpha = fit.r$alpha,  weights = fit.r$weights, lam = lambda1, 

@@ -8,10 +8,18 @@ n <- 150
 p <- 100
 grid <- seq(0, 1, length = p)
 
+<<<<<<< Updated upstream
 # alpha <- sin(2*pi*grid)
 alpha = grid^2*dnorm(grid, 0, 0.1)
 # alpha = 1/(1+exp(-20*(grid-0.5)))
 # alpha = -dnorm(grid, mean=.2, sd=.03) + 3*dnorm(grid, mean=.5, sd=.03) + dnorm(grid, mean=.75, sd=.04)
+=======
+# First experiment
+alpha <- sin(2*pi*grid)
+# alpha = grid^2*dnorm(grid)
+# alpha <- 1/(1+exp(-20*(grid-0.5)))
+# alpha <- -dnorm(grid, 0.2, sd = 0.03) + 3*dnorm(grid, 0.5, sd =  0.03) + dnorm(grid, 0.75, sd = 0.04)
+>>>>>>> Stashed changes
 
 mse.fpcr <- rep(NA, Nrep)
 mse.ls <- rep(NA, Nrep)
@@ -38,11 +46,19 @@ for(f in 1:Nrep){
   y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
+<<<<<<< Updated upstream
   # fit.mpen <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   # fit.fpcr <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
   # fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
   # fit.munp <- m.sp(x = X0, y = y)
+=======
+  fit.mpen <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0, k = 4.685)
+  # fit.fpcr <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
+  fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  # fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
+  fit.munp <- m.sp(x = X0, y = y)
+>>>>>>> Stashed changes
   
   # require(reshape2)
   # require(ggplot2)
@@ -54,22 +70,38 @@ for(f in 1:Nrep){
   # gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
   # gr
 
+<<<<<<< Updated upstream
   # mse.mpen[f] <- mean( (alpha-fit.mpen$bh)^2 )  
   # mse.fpcr[f] <- mean( (alpha-fit.fpcr$fhat)^2 )
   # mse.ls[f]  <- mean( (alpha-fit.ls$bh)^2 )
   mse.smsp[f] <- mean( (alpha-fit.smsp$bh)^2 )
   # mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
+=======
+  mse.mpen[f] <- mean( (alpha-fit.mpen$bh)^2 )
+  # mse.fpcr[f] <- mean( (alpha-fit.fpcr$fhat)^2 )
+  mse.ls[f]  <- mean( (alpha-fit.ls$bh)^2 )
+  # mse.smsp[f] <- mean( (alpha-fit.smsp$bh)^2 )
+  mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
+>>>>>>> Stashed changes
   
   # plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
   # lines(grid, fit.mpen$bh, lwd = 3, col = "blue")
   # lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
   # lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
   
+<<<<<<< Updated upstream
   # matr.mpen[, f] <- fit.mpen$bh
   # matr.fpcr[, f] <- fit.fpcr$fhat
   # matr.ls[, f] <- fit.ls$bh
   matr.smsp[, f] <- fit.smsp$bh
   # matr.munp[, f] <- fit.munp$bh
+=======
+  matr.mpen[, f] <- fit.mpen$bh
+  # matr.fpcr[, f] <- fit.fpcr$fhat
+  matr.ls[, f] <- fit.ls$bh
+  # matr.smsp[, f] <- fit.smsp$bh
+  matr.munp[, f] <- fit.munp$bh
+>>>>>>> Stashed changes
 }
 mean(mse.mpen, na.rm = TRUE)*1000 ; median(mse.mpen, na.rm = TRUE)*1000
 mean(mse.ls, na.rm = TRUE)*1000 ; median(mse.ls, na.rm = TRUE)*1000
@@ -77,9 +109,18 @@ mean(mse.fpcr, na.rm = TRUE)*1000 ; median(mse.fpcr, na.rm = TRUE)*1000
 mean(mse.smsp, na.rm = TRUE)*1000 ; median(mse.smsp, na.rm = TRUE)*1000
 mean(mse.munp, na.rm = TRUE)*1000 ; median(mse.munp, na.rm = TRUE)*1000
 
+<<<<<<< Updated upstream
 matplot(grid, matr.smsp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 # matplot(grid, matr2, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr3, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+=======
+matplot(grid, matr.mpen, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr.smsp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr.munp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr.ls, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr.fpcr, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+
+>>>>>>> Stashed changes
 
 ##################################################################################################################################################
 # Second experiment
