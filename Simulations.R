@@ -41,7 +41,7 @@ for(f in 1:Nrep){
   # y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  # fit.mpen <- m.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  # fit.mpen <- mm.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   # fit.fpcr <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
   # fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   # fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
@@ -65,10 +65,11 @@ for(f in 1:Nrep){
   # mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
   mse.rkhs[f]<- mean((alpha - fit.rkhs$beta/p)^2)
 
-  # plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
+  plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
   # lines(grid, fit.mpen$bh, lwd = 3, col = "blue")
   # lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
   # lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
+  lines(grid, fit.rkhs$beta/p, lwd = 3, col = "red")
   
   # matr.mpen[, f] <- fit.mpen$bh
   # matr.fpcr[, f] <- fit.fpcr$fhat
@@ -89,6 +90,7 @@ matplot(grid, matr.smsp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.la
 matplot(grid, matr.munp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr.ls, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr.fpcr, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
+matplot(grid, matr.rkhs, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 
 
 ##################################################################################################################################################
