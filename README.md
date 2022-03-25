@@ -37,7 +37,7 @@ x <- tecator$absorp.fdata
 x <- x$data
 y <- tecator$y
 y <- y[, 1]
-matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
+matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3, xlab = "")
 ```
 We then fit the penalized MM-estimator and the least-squares estimator
 
