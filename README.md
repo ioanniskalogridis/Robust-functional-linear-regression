@@ -19,6 +19,9 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 
 ``` nbasis ``` : the number of B-spline basis functions with a given order. By default, ```nbasis = [max(40, n/4)]``` with ```n``` the sample size.
 
+``` k ``` : the tuning parameter for the bisquare loss function. By default ```k = 4.685``` corresponding to ```95%``` efficiency in the Gaussian location model.
+
+``` q ``` : the order of the penalty. By default ``` q = 2 ``` corresponding to a penalty on the integrated squared second derivative.
 
 ```
 require(fda.usc)
