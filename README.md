@@ -15,7 +15,7 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 
 ``` y ``` : the response vector.
 
-``` norder ``` : the order of the spline basis to be used. By default equal to 4 corresponding to cubic B-splines.
+``` norder ``` : the order of the spline basis to be used. By default it is equal to 4 corresponding to cubic B-splines.
 
 ``` nbasis ``` : the number of B-spline basis functions with a given order. By default, ```nbasis = [max(40, n/4)]``` with ```n``` the sample size.
 
@@ -23,7 +23,7 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 
 ``` q ``` : the order of the penalty. By default ``` q = 2 ``` corresponding to a penalty on the integrated squared second derivative.
 
-The ```ls.pen.sp()``` takes similar arguments except that ```k``` in this case is not needed.
+The function ```ls.pen.sp()``` takes similar arguments except that ```k``` in this case is not needed.
 
 ```
 require(fda.usc)
