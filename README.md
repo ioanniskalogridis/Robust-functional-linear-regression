@@ -10,6 +10,7 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 # Tecator data
 
 '''
+
 require(fda.usc)
 data(tecator)
 x <- tecator$absorp.fdata
@@ -27,6 +28,7 @@ hist(fit.mm$resids/fit.mm$scale)
 
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
 qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
+
 '''
 
 Notice that the outliers are much less visible from the least-squares residuals.
