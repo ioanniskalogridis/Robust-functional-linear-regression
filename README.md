@@ -52,8 +52,7 @@ plot(fit.mm$bh, type = "l", col = "blue", lwd = 3, xlab = "t", ylab = "Estimates
 lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3); grid()
 legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3, 3), lty = c(1, 3), cex = 1.5)
 ```
-
-![Coefs](https://user-images.githubusercontent.com/77626768/160139338-b41ccc6a-55ef-40f2-a264-82b8b1b1c83b.png)
+![Coefs](https://user-images.githubusercontent.com/77626768/160139488-dcf70cd1-a2b0-4998-81c1-3d02f1034045.png)
 
 
 The least-squares estimates are considerably more wiggly than the MM-estimates. And here are normal QQ plots of the residuals.
