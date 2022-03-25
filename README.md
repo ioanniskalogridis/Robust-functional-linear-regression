@@ -51,9 +51,9 @@ Here are plots of the estimated coefficient functions.
 plot(fit.mm$bh, type = "l", col = "blue", lwd = 3, xlab = "t", ylab = "Estimates")
 lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3); grid()
 legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3, 3), lty = c(1, 3), cex = 1.5)
-
-hist(fit.mm$resids/fit.mm$scale)
 ```
+![Coefs](https://user-images.githubusercontent.com/77626768/160138988-94483362-cf2a-4a2e-b7f2-2ad64db16664.png)
+
 The least-squares estimates are considerably more wiggly than the MM-estimates. And here are normal QQ plots of the residuals.
 
 ```
