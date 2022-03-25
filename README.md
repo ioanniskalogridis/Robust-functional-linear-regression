@@ -39,6 +39,9 @@ y <- tecator$y
 y <- y[, 1]
 matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3, xlab = "")
 ```
+![Xplots](https://user-images.githubusercontent.com/77626768/160139634-9a92471e-e6ce-4077-a6c6-c28034b41234.png)
+
+
 We fit the penalized MM-estimator and the least-squares estimator on this dataset.
 
 ```
@@ -58,9 +61,18 @@ legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3
 The least-squares estimates are considerably more wiggly than the MM-estimates. And here are normal QQ plots of the residuals.
 
 ```
+
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
+
+```
+![Qmm](https://user-images.githubusercontent.com/77626768/160139893-f84b7603-111a-42aa-b832-4e766d816700.png)
+
+
+```
+
 qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
 
 ```
+![Qls](https://user-images.githubusercontent.com/77626768/160139987-a149d15b-58a9-43ee-bf7b-76cb8ddd3bd4.png)
 
 Notice that the MM-estimator is successful in detecting a large number of outliers whereas the residuals of the least-squares estimator suffer from the masking effect.
