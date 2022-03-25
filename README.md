@@ -23,6 +23,8 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 
 ``` q ``` : the order of the penalty. By default ``` q = 2 ``` corresponding to a penalty on the integrated squared second derivative.
 
+The ```ls.pen.sp()``` takes similar arguments except that ```k``` in this case is not needed.
+
 ```
 require(fda.usc)
 data(tecator)
