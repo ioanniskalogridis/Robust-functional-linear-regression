@@ -9,7 +9,13 @@ Contact me at ioannis.kalogridis@kuleuven.be for remarks and/or suggestions.
 
 # Tecator data
 
-Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from the files "Main function (MM P-splines).R" and "Least-squares P-spline estimator.R", respectively.
+Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from the files "Main function (MM P-splines).R" and "Least-squares P-spline estimator.R", respectively. The arguments of ```mm.pen.sp()``` are
+
+``` x ``` : the matrix of the discretized functional predictors.
+``` y ``` : the response vector.
+``` norder ``` : the order of the spline basis to be used. By default equal to 4 corresponding to cubic B-splines.
+``` nbasis ``` : the number of B-spline basis functions with a given order. By default, ```nbasis = [max(40, n/4)]``` with ```n``` the sample size.
+
 
 ```
 require(fda.usc)
