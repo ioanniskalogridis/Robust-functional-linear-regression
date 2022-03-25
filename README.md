@@ -54,7 +54,7 @@ legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3
 
 hist(fit.mm$resids/fit.mm$scale)
 ```
-And here are normal QQ plots of the residuals.
+The least-squares estimates are considerably more wiggly than the MM-estimates. And here are normal QQ plots of the residuals.
 
 ```
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
