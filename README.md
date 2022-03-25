@@ -48,8 +48,8 @@ fit.ls <- ls.pen.sp(x, y)
 Here are plots of the estimated coefficient functions.
 
 ```
-plot(fit.mm$bh, type = "l", col = "blue", lwd = 3)
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3)
+plot(fit.mm$bh, type = "l", col = "blue", lwd = 3, xlab = "t", ylab = "Estimates")
+lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3); grid()
 hist(fit.mm$resids/fit.mm$scale)
 ```
 And here are normal QQ plots of the residuals.
