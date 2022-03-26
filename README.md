@@ -30,8 +30,7 @@ require(fda.usc)
 data(tecator)
 ```
 
-Then, we extract the functional predictor and the response variable.
-
+Then, we extract the functional predictor and the response variable. We may plot the predictor curves and the responses variable in order to visualize the data.
 ```
 x <- tecator$absorp.fdata
 x <- x$data
