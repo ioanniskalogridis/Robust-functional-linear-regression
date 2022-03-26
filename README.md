@@ -40,7 +40,8 @@ par(mfrow = c(1,2))
 matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
 hist(y, main = "")
 ```
-![Fig1](https://user-images.githubusercontent.com/77626768/160242549-b6c7f542-40c6-4253-9159-3bd114cee322.png)
+![Fig1](https://user-images.githubusercontent.com/77626768/160242586-35cd3c83-21fd-46d7-8e52-b572eb0cf0a7.png)
+
 
 
 
