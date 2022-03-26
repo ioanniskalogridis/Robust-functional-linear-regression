@@ -37,13 +37,10 @@ x <- x$data
 y <- tecator$y
 y <- y[, 1]
 par(mfrow = c(1,2))
-matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
+matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3, xlab ="t")
 hist(y, main = "")
 ```
-![Fig1](https://user-images.githubusercontent.com/77626768/160242586-35cd3c83-21fd-46d7-8e52-b572eb0cf0a7.png)
-
-
-
+![Fig1](https://user-images.githubusercontent.com/77626768/160242630-9457bb8a-0a4f-48de-8133-22e1bc29875a.png)
 
 We fit the penalized MM-estimator and the least-squares estimator on this dataset.
 
