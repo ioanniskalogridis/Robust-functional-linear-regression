@@ -63,7 +63,7 @@ The least-squares estimates are considerably more wiggly than the MM-estimates. 
 ```
 
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
-
+qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
 ```
 ![Qmm](https://user-images.githubusercontent.com/77626768/160139893-f84b7603-111a-42aa-b832-4e766d816700.png)
 
