@@ -26,7 +26,7 @@ Here is an example in R. First, load the functions mm.pen.sp and ls.pen.sp from 
 The function ```ls.pen.sp()``` takes similar arguments except that ```k``` in this case is not needed. For this example, we need to load the data from the fda.usc package in R.
 
 ```
-require(fda.usc)
+library(fda.usc)
 data(tecator)
 ```
 
