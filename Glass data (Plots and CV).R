@@ -67,7 +67,8 @@ gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x =
 gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
 gr
 
-# Upper trimmed mean
+## Upper trimmed mean function, 
+## alpha is the percentage of trimming
 u.tr <- function(x, alpha){
   n <- length(x)
   m <- round(alpha*n)
@@ -88,7 +89,7 @@ predict.ls <- function(fit.ls, x){
   return(pred.values)
 }
 
-cv.function<- function(x, y, nfolds, int){
+cv.function <- function(x, y, nfolds, int){
   x <- as.matrix(x)
   splits <- split(1:dim(x)[1], sample( rep(1:nfolds, times= rep( round(dim(x)[1]/nfolds), nfolds ) )) )
   
@@ -111,6 +112,8 @@ cv.function<- function(x, y, nfolds, int){
   rmpse.ls <- mean(rmpse.ls)
   return(list(rmspe.r, rmpse.ls))
 }
+
+
 
 cvrep <- 50
 cv1 <- matrix(NA, nrow = 2, ncol = cvrep)
@@ -185,7 +188,7 @@ for(j in 1:cvrep){
 }
 rowMeans(cv12)
 
-  cv13 <- matrix(NA, nrow = 2, ncol = cvrep)
+cv13 <- matrix(NA, nrow = 2, ncol = cvrep)
 for(j in 1:cvrep){
   cv13[, j] <- unlist(cv.function(x, y13, 5))
 }
