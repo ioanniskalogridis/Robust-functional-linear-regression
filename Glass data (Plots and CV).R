@@ -55,16 +55,16 @@ gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linet
 gr
 
 fit12 <- mm.pen.sp(x = x, y = y12, norder = 4)
-plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
+# plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit121 <- ls.pen.sp(x = x, y = y12)
-lines(fit121$bh, lwd = 3, col = "red", lty = 2)
+# lines(fit121$bh, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
-data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$fhat)
+data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$bh)
 data$x <- 1:dim(x)[2]/dim(x)[2]
 gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
-gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
+gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash") + ylim(-5e-04, 1e-03)
 gr
 
 ## Upper trimmed mean function, 
