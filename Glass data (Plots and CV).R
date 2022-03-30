@@ -42,9 +42,7 @@ gr
 ### Figure 4 in the paper ###
 
 fit4 <- mm.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
-# plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- ls.pen.sp(x = x, y = y4)
-# lines(fit41$bh, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$bh)
@@ -55,9 +53,7 @@ gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linet
 gr
 
 fit12 <- mm.pen.sp(x = x, y = y12, norder = 4)
-# plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit121 <- ls.pen.sp(x = x, y = y12)
-# lines(fit121$bh, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$bh)
