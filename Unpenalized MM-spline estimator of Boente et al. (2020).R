@@ -35,7 +35,6 @@ m.sp <- function(x, y,  k = 4.685){
   resids.f <- fit.f$residuals
   
   beta.hat <- b.sp.e%*%fit.f$coefficients[-1]/dim(x)[2]
-  # plot(beta.hat)
   return(list(bh = beta.hat, beta = fit.f$coefficients[-1], alpha = fit.f$coefficients[1],  weights = fit.f$rweights, 
               resids = resids.f))
 }
