@@ -15,6 +15,9 @@ m.sm.sp <- function(x, y, t, m = 2){
   
   C.m <- chol(p.m)
   Z <- x%*%solve(C.m)
+  
+  ## The following code yields the candidate lambda values proposed by Maronna (2011)
+  ## The practical difference between these candidate values and the default candidate values of pensem_cv is little
   # pca.l <- PcaLocantore(Z)
   
   # p.l <- function(x){
