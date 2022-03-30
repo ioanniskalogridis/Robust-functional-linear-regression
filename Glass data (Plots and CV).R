@@ -41,7 +41,7 @@ gr
 
 ### Figure 4 in the paper ###
 
-fit4 <- m.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
+fit4 <- mm.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
 plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- ls.pen.sp(x = x, y = y4)
 lines(fit41$bh, lwd = 3, col = "red", lty = 2)
@@ -54,7 +54,7 @@ gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x =
 gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
 gr
 
-fit12 <- m.pen.sp(x = x, y = y12, norder = 4)
+fit12 <- mm.pen.sp(x = x, y = y12, norder = 4)
 plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit121 <- ls.pen.sp(x = x, y = y12)
 lines(fit121$bh, lwd = 3, col = "red", lty = 2)
