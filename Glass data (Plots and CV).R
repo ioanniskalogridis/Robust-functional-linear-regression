@@ -88,7 +88,6 @@ predict.ls <- function(fit.ls, x){
   return(pred.values)
 }
 
-
 cv.function<- function(x, y, nfolds, int){
   x <- as.matrix(x)
   splits <- split(1:dim(x)[1], sample( rep(1:nfolds, times= rep( round(dim(x)[1]/nfolds), nfolds ) )) )
@@ -102,10 +101,8 @@ cv.function<- function(x, y, nfolds, int){
     y.test <- y[splits[[j]]]
     y.train <- y[-splits[[j]]]
     fit.r <- m.pen.sp(x = x.train, y = y.train, norder = 4, k = 3.44, q = 2, nbasis = round(min(40, length(y.train)/4)))
-    # fit.ls <- fpcr(y = y.train, x = x.train, method = "GCV.Cp", pve = 0.999)
     fit.ls <- ls.pen.sp(x = x.train, y = y.train,  norder = 4, q = 2, nbasis = round(min(40, length(y.train)/4)))
     pred.values.r <- predict.mpen( fit.r, x.test)
-    # pred.values.ls <- as.numeric(fit.ls$undecor.coef) +  x.test%*%fit.ls$fhat
     pred.values.ls <- predict.ls(fit.ls, x.test)
     rmspe.r[j] <- sqrt(u.tr( (y.test-pred.values.r)^2, 0.1 ))
     rmpse.ls[j] <- sqrt(u.tr( (y.test-pred.values.ls)^2,0.1 ))
@@ -114,37 +111,6 @@ cv.function<- function(x, y, nfolds, int){
   rmpse.ls <- mean(rmpse.ls)
   return(list(rmspe.r, rmpse.ls))
 }
-
-# Results appearing in Table 2 of the paper
-# The veracity of the selected intervals for the smoothing parameter follows from inspection of plots of the RCV function
-
-# cv.function(x, y1, 5, c(5e-05, 1e-04))
-# cv.function(x, y2, 5, c(8, 16))
-# cv.function(x, y3, 5, c(9e-05, 6e-04))
-# cv.function(x, y4, 5, c(2e-02, 9e-02))
-# cv.function(x, y5, 5, c(2e-04, 9e-04))
-# cv.function(x, y6, 5, c(9e-03, 6e-02))
-# cv.function(x, y7, 5,  c(2,7))
-# cv.function(x, y8, 5, c(0.1, 0.9))
-# cv.function(x, y9, 5, c(8e-02, 5e-01))
-# cv.function(x, y10, 5, c(9e-03, 6e-02))
-# cv.function(x, y11, 5, c(8e-05, 5e-04))
-# cv.function(x, y12, 5, c(9e-02, 5e-01))
-# cv.function(x, y13, 5, c(70, 110))
-
-cv.function(x, y1, 5)
-cv.function(x, y2, 5)
-cv.function(x, y3, 5)
-cv.function(x, y4, 5)
-cv.function(x, y5, 5)
-cv.function(x, y6, 5)
-cv.function(x, y7, 5)
-cv.function(x, y8, 5)
-cv.function(x, y9, 5)
-cv.function(x, y10, 5)
-cv.function(x, y11, 5)
-cv.function(x, y12, 5)
-cv.function(x, y13, 5)
 
 cvrep <- 50
 cv1 <- matrix(NA, nrow = 2, ncol = cvrep)
@@ -225,39 +191,3 @@ for(j in 1:cvrep){
 }
 rowMeans(cv13)
 
-
-
-
-require(fda.usc)
-data(tecator)
-x <- tecator$absorp.fdata
-x <- x$data
-## The tecator dataset is known to contain a large number of outliers
-
-y <- tecator$y
-y <- y[, 1]
-matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3, xlab = "")
-fit.mm <-  mm.pen.sp(x = x, y = y)
-fit.ls <- ls.pen.sp(x, y)
-plot(fit.mm$bh, type = "l", col = "blue", lwd = 3, xlab = "t", ylab = "Estimates")
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3) ; grid()
-legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3, 3), lty = c(1, 3), cex = 1.5)
-
-hist(fit.mm$resids/fit.mm$scale)
-qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
-qqnorm(fit.ls$resids, pch = 20, cex = 1.5) ; qqline(fit.ls$resids, lwd  = 3, col = "red")
-## Outliers are barely visible from the LS residuals
-
-y <- tecator$y
-y <- y[, 1]
-fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 3.44)
-fit.ls <- ls.pen.sp(x, y, norder = 4, nbasis = NULL, q  = 2)
-plot(fit1$bh, type = "l", col = "blue", lwd = 3)
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3)
-
-y <- tecator$y
-y <- y[, 3]
-fit1 <-  m.pen.sp(x = x, y = y, norder = 4, nbasis = 40, q = 2, k = 3.44)
-fit.ls <- ls.pen.sp(x, y, norder = 4, nbasis = NULL, q  = 2)
-plot(fit1$bh, type = "l", col = "blue", lwd = 3)
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3)
