@@ -77,6 +77,8 @@ u.tr <- function(x, alpha){
   return(u.tr)
 }
 
+#### The following code produces Table 2 in the paper #####
+
 ## Predict function for PMM
 predict.mpen <- function(fit.r, x){
   pred.values <- fit.r$alpha + x%*%fit.r$bh
@@ -113,9 +115,7 @@ cv.function <- function(x, y, nfolds, int){
   return(list(rmspe.r, rmpse.ls))
 }
 
-
-
-cvrep <- 50
+cvrep <- 30 # Repeat 30 times and average to reduce variability
 cv1 <- matrix(NA, nrow = 2, ncol = cvrep)
 for(j in 1:cvrep){
   cv1[, j] <- unlist(cv.function(x, y1, 5))
