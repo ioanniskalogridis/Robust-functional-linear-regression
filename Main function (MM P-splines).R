@@ -42,7 +42,6 @@ mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se 
   b.sp.e <- eval.basis(seq(1/dim(x)[2], 1-1/dim(x)[2], len = dim(x)[2]), b.sp)
   p.m <- bsplinepen(b.sp, Lfdobj = q ) 
   
-  
   x.p <- x%*%b.sp.e/dim(x)[2]
   
   rob.ctrl <- lmrob.control(trace.level = 0,
