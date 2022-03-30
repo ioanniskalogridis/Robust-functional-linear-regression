@@ -42,16 +42,16 @@ gr
 ### Figure 4 in the paper ###
 
 fit4 <- mm.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
-plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
+# plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- ls.pen.sp(x = x, y = y4)
-lines(fit41$bh, lwd = 3, col = "red", lty = 2)
+# lines(fit41$bh, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$bh)
 data$x <- 1:dim(x)[2]/dim(x)[2]
 gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
-gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
+gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash") + ylim(-0.006, 0.002)
 gr
 
 fit12 <- mm.pen.sp(x = x, y = y12, norder = 4)
