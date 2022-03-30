@@ -41,13 +41,14 @@ for(f in 1:Nrep){
   # y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
   y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
-  # fit.mpen <- mm.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
-  # fit.fpcr <- fpcr(y, xfuncs = X0, method = "GCV.Cp", pve = 0.999999, nbasis = 38)
-  # fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
-  # fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
-  # fit.munp <- m.sp(x = X0, y = y)
+  
+  fit.mpen <- mm.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
+  fit.smsp <- m.sm.sp(x = X0, y = y, t = grid)
+  fit.munp <- m.sp(x = X0, y = y)
   fit.rkhs <- flm.rkhs.rob.t(X0, y = y, dom = grid)
   
+  # For the plots in Figure 1 of the paper
   # require(reshape2)
   # require(ggplot2)
   # data <- data.frame(t(X0))
@@ -58,24 +59,23 @@ for(f in 1:Nrep){
   # gr <- gr + theme_bw(base_size = 40) + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "t", y = "")
   # gr
 
-  # mse.mpen[f] <- mean( (alpha-fit.mpen$bh)^2 )
-  # mse.fpcr[f] <- mean( (alpha-fit.fpcr$fhat)^2 )
-  # mse.ls[f]  <- mean( (alpha-fit.ls$bh)^2 )
-  # mse.smsp[f] <- mean( (alpha-fit.smsp$bh)^2 )
-  # mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
+  mse.mpen[f] <- mean( (alpha-fit.mpen$bh)^2 )
+  mse.fpcr[f] <- mean( (alpha-fit.fpcr$fhat)^2 )
+  mse.ls[f]  <- mean( (alpha-fit.ls$bh)^2 )
+  mse.smsp[f] <- mean( (alpha-fit.smsp$bh)^2 )
+  mse.munp[f] <- mean((alpha - fit.munp$bh)^2)
   mse.rkhs[f]<- mean((alpha - fit.rkhs$beta/p)^2)
 
-  plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
+  # plot(grid, alpha, type = "l", lwd = 3, xlab = "t", ylab = "")
   # lines(grid, fit.mpen$bh, lwd = 3, col = "blue")
-  # lines(grid, fit.fpcr$fhat, col = "gray", lwd = 3)
+  # lines(grid, fit.ls$bh, col = "gray", lwd = 3)
   # lines(grid, fit.smsp$bh, lwd = 3, col = "blue")
-  lines(grid, fit.rkhs$beta/p, lwd = 3, col = "red")
+  # lines(grid, fit.rkhs$beta/p, lwd = 3, col = "red")
   
-  # matr.mpen[, f] <- fit.mpen$bh
-  # matr.fpcr[, f] <- fit.fpcr$fhat
-  # matr.ls[, f] <- fit.ls$bh
-  # matr.smsp[, f] <- fit.smsp$bh
-  # matr.munp[, f] <- fit.munp$bh
+  matr.mpen[, f] <- fit.mpen$bh
+  matr.ls[, f] <- fit.ls$bh
+  matr.smsp[, f] <- fit.smsp$bh
+  matr.munp[, f] <- fit.munp$bh
   matr.rkhs[, f] <- fit.rkhs$beta/p
 }
 mean(mse.mpen, na.rm = TRUE)*1000 ; median(mse.mpen, na.rm = TRUE)*1000
