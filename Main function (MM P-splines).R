@@ -58,12 +58,6 @@ mm.pen.sp <- function(x, y, norder = 4, nbasis = NULL,  k = 4.685, q  = 2, n.se 
   S.est <- lmrob.S(x = x.p, y = y, control = rob.ctrl)
   resids.in <- S.est$residuals
   scale <- S.est$scale
-  # a.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 0)^2)
-  # b.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 1))
-  # c.my <- mean(Mpsi(S.est$residuals/S.est$scale, cc = 1.54764, psi = "bisquare", deriv = 0)*S.est$residuals/S.est$scale )
-  # q.my <- 1 + dim(x.p)[2]*a.my/(2*n*b.my*c.my)
-  # scale = q.my*scale
-  
   q.my <- 1/(1-(1.29-6.02/n)*dim(x.p)[2]/n) # Correct the S-scale (see Maronna and Yohai (2010))
   scale <- q.my*scale
   
