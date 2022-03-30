@@ -304,11 +304,12 @@ x <- x$data
 
 y <- tecator$y
 y <- y[, 1]
-matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3)
-fit.mm <-  m.pen.sp(x = x, y = y)
+matplot(t(x), type = "l", col = "gray", lty = 1, lwd = 3, xlab = "")
+fit.mm <-  mm.pen.sp(x = x, y = y)
 fit.ls <- ls.pen.sp(x, y)
-plot(fit.mm$bh, type = "l", col = "blue", lwd = 3)
-lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3)
+plot(fit.mm$bh, type = "l", col = "blue", lwd = 3, xlab = "t", ylab = "Estimates")
+lines(fit.ls$bh, type = "l", col = "red", lwd = 3, lty = 3) ; grid()
+legend("bottomleft", legend = c("PMM", "PLS"), col = c("blue", "red"), lwd = c(3, 3), lty = c(1, 3), cex = 1.5)
 
 hist(fit.mm$resids/fit.mm$scale)
 qqnorm(fit.mm$resids, pch = 20, cex = 1.5) ; qqline(fit.mm$resids, lwd  = 3, col = "red")
