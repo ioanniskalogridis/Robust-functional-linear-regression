@@ -117,7 +117,7 @@ tukey.reg.rkhs <- function(X, y, k = 4.685, tol = 1e-08, lambda, A.matrix, dom, 
               weights = weights1, resids = resids, interc = v1[1], est.beta = v1))
 }
 
-flm.rkhs.rob.t <- function(X, y, dom, k = 4.6855, interval = c(1e-08, 1e-02), lambda= NULL){
+flm.rkhs.rob.t <- function(X, y, dom, k = 4.6855, lambda= NULL){
   
   T.m = matrix(NA, n, 2)
   T.m[, 1] = apply(X, 1, FUN = function(y) trapz(dom/max(dom), y ) )
