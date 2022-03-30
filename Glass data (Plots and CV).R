@@ -45,8 +45,6 @@ fit4 <- m.pen.sp(x = x, y = y4, norder = 4, q = 2, k = 4.685)
 plot(fit4$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n") ; grid()
 fit41 <- ls.pen.sp(x = x, y = y4)
 lines(fit41$bh, lwd = 3, col = "red", lty = 2)
-# fit41 <- fpcr(y = y4, xfuncs = x)
-# lines(fit41$fhat, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$bh)
@@ -60,7 +58,6 @@ fit12 <- m.pen.sp(x = x, y = y12, norder = 4)
 plot(fit12$bh, type = "l", lwd = 3, col = "blue", cex.lab = 2, cex.axis = 2, yaxt = "n", xaxt = "n", xlab = "", ylab = "") ; grid()
 fit121 <- ls.pen.sp(x = x, y = y12)
 lines(fit121$bh, lwd = 3, col = "red", lty = 2)
-# lines(fit121$fhat, lwd = 3, col = "red", lty = 2)
 
 require(ggplot2)
 data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$fhat)
@@ -69,12 +66,6 @@ gr <- ggplot(data = data, aes(x = x, y = fit)) + geom_line(aes(x = x, y = fit.r)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
 gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash")
 gr
-
-
-
-
-
-
 
 # Upper trimmed mean
 u.tr <- function(x, alpha){
@@ -85,11 +76,13 @@ u.tr <- function(x, alpha){
   return(u.tr)
 }
 
+## Predict function for PMM
 predict.mpen <- function(fit.r, x){
   pred.values <- fit.r$alpha + x%*%fit.r$bh
   return(pred.values)
 }
 
+## Predict function for PLS
 predict.ls <- function(fit.ls, x){
   pred.values <- fit.ls$alpha + x%*%fit.ls$bh
   return(pred.values)
