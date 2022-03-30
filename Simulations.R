@@ -38,9 +38,9 @@ for(f in 1:Nrep){
     }
   }
   y0 = X0%*%alpha
-  # y <- y0 + rnorm(n)
+  y <- y0 + rnorm(n)
   # y <- y0 + rt(n, df = 3)
-  y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
+  # y <- y0 + rnormMix(n, mean1 = 0, sd = 1, mean2 = 14, sd2 = 1, p.mix = 0.1)
   
   fit.mpen <- mm.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
   fit.ls <- ls.pen.sp(x = X0, y = y, nbasis = round(min(n/4, 40)), n.se = 0)
@@ -48,7 +48,7 @@ for(f in 1:Nrep){
   fit.munp <- m.sp(x = X0, y = y)
   fit.rkhs <- flm.rkhs.rob.t(X0, y = y, dom = grid)
   
-  # For the plots in Figure 1 of the paper
+  # The following code produces the plots in Figure 1 of the paper
   # require(reshape2)
   # require(ggplot2)
   # data <- data.frame(t(X0))
@@ -80,7 +80,6 @@ for(f in 1:Nrep){
 }
 mean(mse.mpen, na.rm = TRUE)*1000 ; median(mse.mpen, na.rm = TRUE)*1000
 mean(mse.ls, na.rm = TRUE)*1000 ; median(mse.ls, na.rm = TRUE)*1000
-mean(mse.fpcr, na.rm = TRUE)*1000 ; median(mse.fpcr, na.rm = TRUE)*1000
 mean(mse.smsp, na.rm = TRUE)*1000 ; median(mse.smsp, na.rm = TRUE)*1000
 mean(mse.munp, na.rm = TRUE)*1000 ; median(mse.munp, na.rm = TRUE)*1000
 mean(mse.rkhs, na.rm = TRUE)*1000 ; median(mse.rkhs, na.rm = TRUE)*1000
@@ -89,7 +88,6 @@ matplot(grid, matr.mpen, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.la
 matplot(grid, matr.smsp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr.munp, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr.ls, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
-matplot(grid, matr.fpcr, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 matplot(grid, matr.rkhs, lwd = 3, col = "gray", type = "l", cex.axis = 2, cex.lab = 2) ; lines(grid, alpha, lwd = 3, col = "black"); grid()
 
 
