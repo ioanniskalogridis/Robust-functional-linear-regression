@@ -47,7 +47,7 @@ fit41 <- ls.pen.sp(x = x, y = y4)
 require(ggplot2)
 data <- data.frame(fit.r = fit4$bh, fit.ls = fit41$bh)
 data$x <- 1:dim(x)[2]/dim(x)[2]
-gr <- ggplot(data = data, aes(x = x, y = fit4)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
+gr <- ggplot(data = data, aes(x = x, y = fit.r)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
 gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash") + ylim(-0.006, 0.002)
 gr
@@ -58,7 +58,7 @@ fit121 <- ls.pen.sp(x = x, y = y12)
 require(ggplot2)
 data <- data.frame(fit.r = fit12$bh, fit.ls = fit121$bh)
 data$x <- 1:dim(x)[2]/dim(x)[2]
-gr <- ggplot(data = data, aes(x = x, y = fit12)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
+gr <- ggplot(data = data, aes(x = x, y = fit.r)) + geom_line(aes(x = x, y = fit.r), colour = "blue",  size = 1.2) + theme_bw(base_size = 40)
 gr <- gr + theme(plot.margin = margin(t = 0,  r = 0,  b = 0, l = 0))  + labs(x = "", y = "")
 gr <- gr +  geom_line(aes(x = x, y = fit.ls), colour = "red",  size = 1.2, linetype = "longdash") + ylim(-5e-04, 1e-03)
 gr
